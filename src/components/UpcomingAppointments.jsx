@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-expressions */
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { ConfigSelectors } from "../redux/configRedux";
 
 const UpcomingAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -32,6 +35,42 @@ const UpcomingAppointments = () => {
     },
     {
       id: 4,
+      customerName: "Jane Doe",
+      staffName: "Bob Johnson",
+      staffPhoto:
+        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
+      time: new Date("2023-03-24T14:00:00"),
+      duration: 2,
+    },
+    {
+      id: 5,
+      customerName: "John Doe",
+      staffName: "Mary Smith",
+      staffPhoto:
+        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
+      time: new Date("2023-03-23T10:00:00"),
+      duration: 1,
+    },
+    {
+      id: 6,
+      customerName: "Jane Doe",
+      staffName: "Bob Johnson",
+      staffPhoto:
+        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
+      time: new Date("2023-03-24T14:00:00"),
+      duration: 2,
+    },
+    {
+      id: 7,
+      customerName: "John Doe",
+      staffName: "Mary Smith",
+      staffPhoto:
+        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
+      time: new Date("2023-03-23T10:00:00"),
+      duration: 1,
+    },
+    {
+      id: 8,
       customerName: "Jane Doe",
       staffName: "Bob Johnson",
       staffPhoto:
@@ -73,6 +112,18 @@ const UpcomingAppointments = () => {
 };
 
 function AppointmentList({ appointments }) {
+  const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
+
+  useEffect(() => {
+    let appointmentListElm = document.querySelector(".appointment-list");
+    if (isOpen) {
+      appointmentListElm.style.gridTemplateColumns =
+        "repeat(1, minmax(0, 1fr))";
+    } else {
+      appointmentListElm.style.gridTemplateColumns =
+        "repeat(2, minmax(0, 1fr))";
+    }
+  }, [isOpen]);
   return (
     <ul className="appointment-list">
       {appointments.map((appointment) => (

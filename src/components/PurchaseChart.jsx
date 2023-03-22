@@ -31,9 +31,8 @@ const PurchaseChart = () => {
     return (
       <Chart
         chartType="ColumnChart"
-        width="100%"
-        height="400px"
-        style={{ paddingTop: "15px" }}
+        width={"100%"}
+        height={"400px"}
         data={data}
         options={options}
       />
@@ -45,11 +44,7 @@ const PurchaseChart = () => {
   }, [isOpen, renderChart]);
 
   // return the chart component
-  return (
-    <div style={{ width: isOpen ? `calc(100% - 200px)` : "100%" }}>
-      {renderChart()}
-    </div>
-  );
+  return <div style={{ maxWidth: 1266.42 }}>{renderChart()}</div>;
 };
 
 export default PurchaseChart;
