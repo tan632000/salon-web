@@ -1,38 +1,298 @@
-.App {
-  text-align: center;
+*{
+  margin:0;
+  padding:0;
+  text-decoration: none;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container{
+  display:flex;
+  background-color: #e9e5e5;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+main{
+  width: 100%;
+  padding: 40px;
+}
+.sidebar{
+  background: #000;
+  color: #fff;
+  width: 250px;
+  transition: all 0.35s;
+  height: 100vh;
+  position: fixed;
+}
+.top_section{
+  display: flex;
+  align-items:center;
+  padding: 20px 15px;
+}
+.logo{
+  font-size: 30px;
+}
+.bars{
+  display: flex;
+  font-size: 25px;
+}
+.link{
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.link:hover{
+  background:lightskyblue;
+  color: #000;
+  transition: all 0.5s;
+}
+.active{
+  background: lightskyblue;
+  color: #000;
+}
+.icon, .link_text{
+  font-size: 20px;
+}
+.card {
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+.card .content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin-left: 20px;
+}
+.card .content .service {
+  height: 36px;
+  color: #aba399;
+  font-size: 16px;
+  width: 150px;
+}
+.card .content .price {
+  font-size: 20px;
+  color: #000;
+  font-weight: bold;
+}
+.full-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 30px;
+  width: 100%;
+}
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+}
+
+.normal-card {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/*Upcoming Appointments*/
+.upcoming-appointment {
+  margin-left: 100px;
+}
+.calendar {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-header button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+}
+
+.calendar-header button:hover {
+  color: #666;
+}
+
+.calendar-header .prev-month {
+  float: left;
+}
+
+.calendar-header .next-month {
+  float: right;
+}
+
+.calendar-header {
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: space-around;
+}
+
+.calendar-body {
+  padding: 10px;
+}
+
+.calendar-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.calendar-day-name {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  color: #999;
+}
+
+.calendar-week {
+  display: flex;
+  flex-direction: row;
+}
+
+.calendar-day {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: #f7f7f7;
+}
+
+.calendar-day.disabled {
+  color: #ccc;
+  cursor: default;
+}
+
+.calendar-day.today {
+  background-color: #f7f7f7;
+}
+
+.calendar-day.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.row {
+  /* display: flex; */
+  flex-direction: row;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.col-md-4 {
+  flex: 1;
+  padding: 0 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.col-md-8 {
+  flex: 2;
+  padding: 0 10px;
+}
+
+.appointment-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.appointment {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f5f0f6;
+}
+
+.appointment-header {
+  display: flex;
+  align-items: center;
+}
+
+.staff-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.staff-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.appointment-details {
+  margin-left: 50px;
+  font-size: 1.1rem;
+}
+
+.appointment-details > div {
+  margin-bottom: 5px;
+}
+/* Stylist*/
+.stylist-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.avatar-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.avatar-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stylist-name {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.stylist-services {
+  font-size: 14px;
+  margin: 0;
+}
+
+main{
+  transition: all 0.35s ease-out;
+  width: calc(100% - 50px);
+  margin-left: 50px;
+}
+
+main.leftbar-open {
+  transition: all 0.35s ease-out;
+  width: calc(100% - 250px);
+  margin-left: 250px;
 }

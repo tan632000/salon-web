@@ -1,0 +1,183 @@
+/* Center the page content */
+body {
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+}
+
+td:first-child {
+    width: 20%;
+}
+
+td:nth-child(2) {
+    width: 15%;
+}
+
+td:nth-child(3) {
+    width: 15%;
+}
+
+td:nth-child(4) {
+    width: 10%;
+}
+
+td:nth-child(5) {
+    width: 15%;
+}
+
+td:nth-child(6) {
+    width: 5%;
+}
+
+td:last-child {
+    width: 10%;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button-edit {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #4CAF50;
+}
+  
+.button-edit:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+  
+.button-delete {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #d92727;
+}
+  
+.button-delete:hover {
+    background-color: #e54824;
+    color: white;
+}
+
+.popup-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    opacity: 0.5;
+}
+
+/* Style the create and edit popup */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.popup input[type="text"],
+.popup input[type="email"],
+.popup input[type="tel"],
+.popup select {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.popup button {
+    display: block;
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popup button:hover {
+background-color: #3e8e41;
+}
+
+.popup .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.popup .close:hover {
+    color: #555;
+}
+
+/* Style the delete button */
+.delete-button {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #e53935;
+}
+  

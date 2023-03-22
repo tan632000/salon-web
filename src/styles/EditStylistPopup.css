@@ -1,0 +1,305 @@
+/* .modal-content {
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.modal-header {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #d3d3d3;
+}
+
+.modal-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.modal-body {
+  padding: 20px 0;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.dropdown-toggle {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.dropdown-toggle:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.dropdown-item {
+  color: #495057;
+  font-weight: bold;
+}
+
+.dropdown-item:hover {
+  background-color: #f7f7f7;
+  color: #495057;
+}
+
+.service-button {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.service-button:hover {
+  background-color: #f7f7f7;
+  color: #495057;
+}
+
+.modal-footer {
+  padding-top: 20px;
+  border-top: 1px solid #d3d3d3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+} */
+
+:root {
+  --select-border: #393939;
+  --select-focus: #101484;
+  --select-arrow: var(--select-border);
+}
+.show-modal{
+  color: #fff;
+  background: linear-gradient(to right, #33a3ff, #0675cf, #49a6fd);
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 10px 15px;
+  margin: 200px auto 0;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: block;
+  transition: all 0.3s ease 0s;
+}
+.show-modal:hover,
+.show-modal:focus{
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  outline: none;
+}
+.modal-dialog{
+  width: 400px;
+}
+.modal-dialog{ transform: scale(0.5); }
+.modal-dialog{ transform: scale(1); }
+.modal-dialog .modal-content{
+  text-align: center;
+  border: none;
+}
+.modal-content .close{
+  color: #fff;
+  background: linear-gradient(to right, #33a3ff, #0675cf, #4cd5ff);
+  font-size: 25px;
+  font-weight: 400;
+  text-shadow: none;
+  line-height: 27px;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 1;
+  position: absolute;
+  left: auto;
+  right: 8px;
+  top: 8px;
+  z-index: 1;
+  transition: all 0.3s;
+}
+.modal-content .close:hover{
+  color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+.close:focus{ outline: none; }
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  display: flex;
+  justify-content: center;
+}
+.modal-edit {
+  background: #b4bcc3;
+  max-height: 850px;
+  margin-top: 50px;
+}
+.modal-body{ padding: 60px 40px 40px !important; }
+.modal-body .title{
+  color: #026fd4;
+  font-size: 33px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+}
+.modal-body .description{
+  color: #9A9EA9;
+  font-size: 16px;
+  margin: 0 0 20px;
+}
+.modal-body .form-group{
+  text-align: left;
+  margin-bottom: 20px;
+  position: relative;
+}
+.modal-body .input-icon{
+  color: #777;
+  font-size: 18px;
+  transform: translateY(-50%);
+  position: absolute;
+  top: 50%;
+  left: 20px;
+}
+.modal-body .form-control{
+  font-size: 17px;
+  height: 30px;
+  width: 100%;
+  margin: 0 auto;
+  border: 2px solid #eee;
+  border-radius: 5px;
+  box-shadow: none;
+  outline: none;
+}
+.form-control::placeholder{
+  color: #AEAFB1;
+}
+.modal-content .modal-body .btn{
+  color: #fff;
+  background: linear-gradient(to right, #33a3ff, #0675cf, #4cd5ff);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 38px;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  border: none;
+  display: inline-block;
+  transition: all 0.6s ease 0s;
+}
+.modal-content .modal-body .btn:hover{
+  color: #fff;
+  letter-spacing: 2px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.modal-content .modal-body .btn:focus{ outline: none; }
+
+label {
+  align-items: center;
+  color: #9A9EA9;
+  font-size: 16px;
+}
+
+select {
+  /* styles reset, including removing the default dropdown arrow */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+
+  /* Stack above custom arrow */
+  z-index: 1;
+
+  /* Remove focus outline */
+  outline: none;
+}
+
+.select {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+}
+select {
+  grid-area: select;
+  max-width: 30ch;
+  border: 1px solid var(--select-border);
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+  background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+}
+select::after {
+  content: "";
+  justify-self: end;
+  width: 0.8em;
+  height: 0.5em;
+  background-color: var(--select-arrow);
+  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Select some files';
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+.image {
+  object-fit: contain;
+  width: 300px;
+}
