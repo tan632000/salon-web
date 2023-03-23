@@ -1,10 +1,15 @@
+/* eslint-disable no-unused-expressions */
 import React, { useState } from "react";
 import "../styles/Login.css";
 import salonImage from "../images/background.jpg";
+import axiosClient from "../api/axiosClient";
+import cookie from 'js-cookie'
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -17,6 +22,20 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Add code to submit login credentials to middleware here
+    axiosClient
+      .post('/users/login', {
+        email,
+        password,
+      })
+      .then((data) => {
+        const {user, token} = data;
+        if (user && token) {
+          cookie.set('token', token)
+          navigate('/dashboard');
+        }
+      })
+      .catch((err) => console.log(err))
+
   };
 
   return (
