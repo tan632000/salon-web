@@ -8,21 +8,30 @@ import Analytics from "./pages/Analytics.jsx";
 import Comment from "./pages/Comment.jsx";
 import Product from "./pages/Product.jsx";
 import ProductList from "./pages/ProductList.jsx";
+import Login from "./pages/Login.jsx";
+import cookie from "js-cookie";
 
 const App = () => {
+  const token = cookie.get("token");
   return (
     <BrowserRouter>
-      <Sidebar>
+      {token ? (
+        <Sidebar>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/stylist" element={<Stylist />} />
+            <Route path="/comment" element={<Comment />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/productList" element={<ProductList />} />
+          </Routes>
+        </Sidebar>
+      ) : (
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/stylist" element={<Stylist />} />
-          <Route path="/comment" element={<Comment />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/productList" element={<ProductList />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
-      </Sidebar>
+      )}
     </BrowserRouter>
   );
 };
