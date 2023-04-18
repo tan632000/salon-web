@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { SERVICES } from "../constants/services";
+import { useSelector } from "react-redux";
+import { ConfigSelectors } from "../redux/configRedux";
 import "../styles/CreateStylistPopup.css";
 
 const CreateStylistPopup = ({ onClose, onAdd }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [selectedServices, setSelectedServices] = useState([]);
   const [photo, setPhoto] = useState("");
+
+  const listServices = useSelector(ConfigSelectors.listServices);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -23,10 +24,19 @@ const CreateStylistPopup = ({ onClose, onAdd }) => {
     setPhoneNumber(event.target.value);
   };
 
-  const handlePhotoChange = (event) => {
+  const handlePhotoChange = async (event) => {
+    let file = '';
     if (event.target.files && event.target.files[0]) {
-      setPhoto(URL.createObjectURL(event.target.files[0]));
+      file = event.target.files[0];
     }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'imageupload');
+    const data = await fetch('https://api.cloudinary.com/v1_1/c-ng-ty-tnhh-cic-vi-t-nam-chapter/image/upload', {
+      method: 'POST',
+      body: formData
+    }).then(r => r.json());
+    setPhoto(data.secure_url)
   };
 
   const handleServiceChange = (event) => {
@@ -42,17 +52,14 @@ const CreateStylistPopup = ({ onClose, onAdd }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-
     const newStylist = {
-      id: uuidv4(),
       name: name,
       email: email,
       phoneNumber: phoneNumber,
-      listService: selectedServices,
-      rating: 0,
+      servicesOffered: selectedServices,
       photo: photo,
+      salonId: localStorage.getItem('salonId')
     };
-
     onAdd(newStylist);
     onClose();
   };
@@ -69,6 +76,7 @@ const CreateStylistPopup = ({ onClose, onAdd }) => {
         tabIndex={-1}
         role="dialog"
         aria-aria-labelledby="createStylistLabel"
+        style={{height: 700, marginTop: 20}}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content clearfix">
@@ -132,8 +140,8 @@ const CreateStylistPopup = ({ onClose, onAdd }) => {
                       multiple
                       onChange={handleServiceChange}
                     >
-                      {SERVICES.map((service) => (
-                        <option value={service}>{service}</option>
+                      {listServices.map((service) => (
+                        <option value={service._id}>{service.name}</option>
                       ))}
                     </select>
                     <span class="focus"></span>

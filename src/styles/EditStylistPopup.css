@@ -173,8 +173,11 @@
 }
 .modal-body .form-group{
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   position: relative;
+}
+.modal-body .form-group label {
+  font-size: 20px;
 }
 .modal-body .input-icon{
   color: #777;
@@ -186,7 +189,8 @@
 }
 .modal-body .form-control{
   font-size: 17px;
-  height: 30px;
+  margin-top: 5px;
+  height: 25px;
   width: 100%;
   margin: 0 auto;
   border: 2px solid #eee;
@@ -302,4 +306,5 @@ select::after {
 .image {
   object-fit: contain;
   width: 300px;
+  max-height: 100px;
 }

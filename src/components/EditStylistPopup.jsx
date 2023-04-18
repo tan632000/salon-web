@@ -1,127 +1,24 @@
-// import React, { useState } from "react";
-// import PropTypes from "prop-types";
-
-// function EditStylistPopup(props) {
-//   const [name, setName] = useState(props.stylist.name);
-//   const [email, setEmail] = useState(props.stylist.email);
-//   const [phoneNumber, setPhoneNumber] = useState(props.stylist.phoneNumber);
-//   const [listService, setListService] = useState(props.stylist.listService);
-//   const [rating, setRating] = useState(props.stylist.rating);
-
-//   const handleNameChange = (event) => {
-//     setName(event.target.value);
-//   };
-
-//   const handleEmailChange = (event) => {
-//     setEmail(event.target.value);
-//   };
-
-//   const handlePhoneNumberChange = (event) => {
-//     setPhoneNumber(event.target.value);
-//   };
-
-//   const handleListServiceChange = (event) => {
-//     setListService(event.target.value);
-//   };
-
-//   const handleRatingChange = (event) => {
-//     setRating(event.target.value);
-//   };
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     const updatedStylist = {
-//       ...props.stylist,
-//       name: name,
-//       email: email,
-//       phoneNumber: phoneNumber,
-//       listService: listService,
-//       rating: rating,
-//     };
-//     props.onEdit(updatedStylist);
-//   };
-
-//   return (
-//     <div className="popup">
-//       <div className="popup-inner">
-//         <form onSubmit={handleSubmit}>
-//           <h2>Edit Stylist</h2>
-//           <label>
-//             Name:
-//             <input type="text" value={name} onChange={handleNameChange} />
-//           </label>
-//           <label>
-//             Email:
-//             <input type="text" value={email} onChange={handleEmailChange} />
-//           </label>
-//           <label>
-//             Phone Number:
-//             <input
-//               type="text"
-//               value={phoneNumber}
-//               onChange={handlePhoneNumberChange}
-//             />
-//           </label>
-//           <label>
-//             List Service:
-//             <input
-//               type="text"
-//               value={listService}
-//               onChange={handleListServiceChange}
-//             />
-//           </label>
-//           <label>
-//             Rating:
-//             <input type="text" value={rating} onChange={handleRatingChange} />
-//           </label>
-//           <div className="button-group">
-//             <button className="btn cancel" onClick={props.onClose}>
-//               Cancel
-//             </button>
-//             <button className="btn save" type="submit">
-//               Save
-//             </button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-// EditStylistPopup.propTypes = {
-//   stylist: PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     name: PropTypes.string.isRequired,
-//     email: PropTypes.string.isRequired,
-//     phoneNumber: PropTypes.string.isRequired,
-//     listService: PropTypes.string.isRequired,
-//     rating: PropTypes.number.isRequired,
-//   }).isRequired,
-//   onEdit: PropTypes.func.isRequired,
-//   onClose: PropTypes.func.isRequired,
-// };
-
-// export default EditStylistPopup;
-
 import React, { useState } from "react";
-import { SERVICES } from "../constants/services";
+import { useSelector } from "react-redux";
+import { ConfigSelectors } from "../redux/configRedux";
 import "../styles/EditStylistPopup.css";
 
 const EditStylistPopup = ({ show, onClose, onEdit, stylist }) => {
   const [name, setName] = useState(stylist.name);
   const [email, setEmail] = useState(stylist.email);
+  const listServices = useSelector(ConfigSelectors.listServices);
   const [phoneNumber, setPhoneNumber] = useState(stylist.phoneNumber);
-  const [rating, setRating] = useState(stylist.rating);
-  const [selectedServices, setSelectedServices] = useState(stylist.listService);
+  const [selectedServices, setSelectedServices] = useState(stylist.servicesOfferedName);
   const [photo, setPhoto] = useState(stylist.photo);
+  const [editService, setEditService] = useState(false);
+
   const handleEdit = () => {
     const updatedStylist = {
       ...stylist,
       name,
       email,
       phoneNumber,
-      rating,
-      listService: selectedServices,
+      servicesOffered: editService === true ? selectedServices : stylist.servicesOffered,
       photo: photo,
     };
     onEdit(updatedStylist);
@@ -133,6 +30,7 @@ const EditStylistPopup = ({ show, onClose, onEdit, stylist }) => {
   };
 
   const handleServiceChange = (event) => {
+    setEditService(true);
     const options = event.target.options;
     const selectedValues = [];
     for (let i = 0; i < options.length; i++) {
@@ -143,10 +41,19 @@ const EditStylistPopup = ({ show, onClose, onEdit, stylist }) => {
     setSelectedServices(selectedValues);
   };
 
-  const handlePhotoChange = (event) => {
+  const handlePhotoChange = async (event) => {
+    let file = '';
     if (event.target.files && event.target.files[0]) {
-      setPhoto(URL.createObjectURL(event.target.files[0]));
+      file = event.target.files[0];
     }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'imageupload');
+    const data = await fetch('https://api.cloudinary.com/v1_1/c-ng-ty-tnhh-cic-vi-t-nam-chapter/image/upload', {
+      method: 'POST',
+      body: formData
+    }).then(r => r.json());
+    setPhoto(data.secure_url)
   };
   return (
     <div className="overlay">
@@ -156,6 +63,7 @@ const EditStylistPopup = ({ show, onClose, onEdit, stylist }) => {
         tabIndex={-1}
         role="dialog"
         aria-aria-labelledby="createStylistLabel"
+        style={{height: 700, marginTop: 20}}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content clearfix">
@@ -218,31 +126,17 @@ const EditStylistPopup = ({ show, onClose, onEdit, stylist }) => {
                       multiple
                       onChange={handleServiceChange}
                     >
-                      {SERVICES.map((service) => (
+                      {listServices.map((service) => (
                         <option
-                          value={service}
-                          selected={selectedServices.includes(service) === true}
+                          value={service._id}
+                          selected={selectedServices.includes(service.name) === true}
                         >
-                          {service}
+                          {service.name}
                         </option>
                       ))}
                     </select>
                     <span class="focus"></span>
                   </div>
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="phoneNumber">Rating</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="formRating"
-                    min="0"
-                    max="5"
-                    placeholder="Enter rating"
-                    value={rating}
-                    onChange={(e) => setRating(e.target.value)}
-                  />
                 </div>
 
                 <div className="form-group">

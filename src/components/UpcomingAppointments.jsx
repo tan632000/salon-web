@@ -2,111 +2,42 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ConfigSelectors } from "../redux/configRedux";
+import axiosClient from "../api/axiosClient.js"
 
 const UpcomingAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      customerName: "John Doe",
-      staffName: "Mary Smith",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-23T10:00:00"),
-      duration: 1,
-    },
-    {
-      id: 2,
-      customerName: "Jane Doe",
-      staffName: "Bob Johnson",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-24T14:00:00"),
-      duration: 2,
-    },
-    {
-      id: 3,
-      customerName: "John Doe",
-      staffName: "Mary Smith",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-23T10:00:00"),
-      duration: 1,
-    },
-    {
-      id: 4,
-      customerName: "Jane Doe",
-      staffName: "Bob Johnson",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-24T14:00:00"),
-      duration: 2,
-    },
-    {
-      id: 5,
-      customerName: "John Doe",
-      staffName: "Mary Smith",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-23T10:00:00"),
-      duration: 1,
-    },
-    {
-      id: 6,
-      customerName: "Jane Doe",
-      staffName: "Bob Johnson",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-24T14:00:00"),
-      duration: 2,
-    },
-    {
-      id: 7,
-      customerName: "John Doe",
-      staffName: "Mary Smith",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-23T10:00:00"),
-      duration: 1,
-    },
-    {
-      id: 8,
-      customerName: "Jane Doe",
-      staffName: "Bob Johnson",
-      staffPhoto:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      time: new Date("2023-03-24T14:00:00"),
-      duration: 2,
-    },
-    // additional appointments go here
-  ]);
+  const [appointment, setAppointment] = useState([]);
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
   };
 
-  const filteredAppointments = appointments.filter(
-    (appointment) =>
-      appointment.time.getFullYear() === selectedDate.getFullYear() &&
-      appointment.time.getMonth() === selectedDate.getMonth() &&
-      appointment.time.getDate() === selectedDate.getDate()
-  );
-
+  const handleDay = (day) => {
+    const salonId = localStorage.getItem('salonId');
+    axiosClient
+    .get(`/appointments/${salonId}/${day}`)
+    .then((data) => {
+      setAppointment(data)
+    })
+  }
+  const filteredArray = appointment.length > 0 && appointment.filter(app => app.status === 2);
+  const price = filteredArray.length > 0 ? filteredArray.reduce((sum, obj) => sum + obj.price, 0) : 0;
   return (
-    
     <div className="row">
       <div className="col-md-4">
         <Calendar
           selectedDate={selectedDate}
           handleDateClick={handleDateClick}
-          filteredAppointments={filteredAppointments}
+          handleDay={handleDay}
+          filteredAppointments={appointment}
         />
       </div>
       <div className="col-12">
         <h3 style={{ fontSize: "25px", fontWeight: 600, marginBottom: "20px" }}>
           Appointments on {selectedDate.toDateString()}
         </h3>
-        <AppointmentList appointments={filteredAppointments} />
+        <h3 style={{ fontWeight: 600, marginBottom: "20px" }}>Total Revenue: {price} VNĐ</h3>
+        <AppointmentList appointments={appointment} />
       </div>
     </div>
   );
@@ -114,41 +45,55 @@ const UpcomingAppointments = () => {
 
 function AppointmentList({ appointments }) {
   const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
+  const STATUS_MAP = {
+    1: { color: 'pending', text: 'Pending' },
+    2: { color: 'completed', text: 'Completed' },
+    3: { color: 'cancelled', text: 'Cancelled' },
+  };
 
   useEffect(() => {
     let appointmentListElm = document.querySelector(".appointment-list");
     if (isOpen) {
-      appointmentListElm.style.gridTemplateColumns =
-        "repeat(1, minmax(0, 1fr))";
+      appointmentListElm.style.justifyContent =
+        "space-between";
     } else {
       appointmentListElm.style.gridTemplateColumns =
-        "repeat(2, minmax(0, 1fr))";
+        "space-around";
     }
   }, [isOpen]);
+
+  const renderStatus = (status) => {
+    const { color, text } = STATUS_MAP[status] || { color: '', text: '' };
+    return (
+      <button className={`appointment-status ${color}`}>{text}</button>
+    );
+  };
+
   return (
     <ul className="appointment-list">
-      {appointments.map((appointment) => (
-        <li key={appointment.id} className="appointment">
+      {appointments.length > 0 && appointments.map((appointment) => (
+        <li key={appointment._id} className="appointment">
           <div className="appointment-header">
             <img
-              src={appointment.staffPhoto}
-              alt={appointment.staffName}
+              src={appointment.stylist.photo}
+              alt={appointment.stylist.name}
               className="staff-photo"
             />
-            <div className="staff-name">{appointment.staffName}</div>
+            <div className="staff-name">{appointment.stylist.name}</div>
           </div>
           <div className="appointment-details">
-            <div>{appointment.time.toLocaleTimeString()}</div>
+            <div>{(new Date(appointment.time)).toLocaleTimeString()}</div>
             <div>{appointment.duration} hour(s)</div>
-            <div>{appointment.customerName}</div>
+            <div>{appointment.userName}</div>
           </div>
+          {renderStatus(appointment.status)}
         </li>
       ))}
     </ul>
   );
 }
 
-const Calendar = ({ selectedDate, handleDateClick, filteredAppointments }) => {
+const Calendar = ({ selectedDate, handleDateClick, handleDay, filteredAppointments }) => {
   const [month, setMonth] = useState(selectedDate.getMonth());
   const [year, setYear] = useState(selectedDate.getFullYear());
 
@@ -156,7 +101,9 @@ const Calendar = ({ selectedDate, handleDateClick, filteredAppointments }) => {
   const firstDayOfMonth = new Date(year, month, 1).getDay();
 
   const handleClick = (day) => {
+    let monthUpdate = month + 1;
     handleDateClick(new Date(year, month, day));
+    handleDay(year + '/' + monthUpdate + '/' + day)
   };
 
   const handlePrevMonth = () => {
@@ -176,6 +123,9 @@ const Calendar = ({ selectedDate, handleDateClick, filteredAppointments }) => {
   };
 
   const renderCalendarDay = (day) => {
+    if (day <= 0) {
+      day = ""
+    }
     const isCurrentMonth = day <= daysInMonth;
     const isToday = isCurrentMonth && day === new Date().getDate();
     const isSelected =
@@ -183,8 +133,7 @@ const Calendar = ({ selectedDate, handleDateClick, filteredAppointments }) => {
       day === selectedDate.getDate() &&
       month === selectedDate.getMonth() &&
       year === selectedDate.getFullYear();
-
-    const hasAppointments = filteredAppointments.some(
+    const hasAppointments = filteredAppointments > 0 && filteredAppointments.some(
       (appointment) =>
         appointment.time.getDate() === day &&
         appointment.time.getMonth() === month &&

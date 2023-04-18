@@ -209,7 +209,7 @@ main{
 
 .appointment-list {
   display: grid;
-  /* grid-template-columns: repeat(2, minmax(0, 1fr)); */
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -221,12 +221,14 @@ main{
   margin-bottom: 20px;
   padding: 15px;
   background-color: #f5f0f6;
+  justify-content: space-around;
 }
 
 .appointment-header {
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 35%;
 }
 
 .staff-photo {
@@ -244,11 +246,32 @@ main{
 .appointment-details {
   margin-left: 20px;
   font-size: 1.1rem;
+  width: 30%;
 }
 
 .appointment-details > div {
   margin-bottom: 5px;
 }
+
+.appointment-status {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.pending {
+  background-color: #9999d4;
+}
+
+.completed {
+  background-color: rgb(186, 228, 88);
+}
+
+.cancelled {
+  background-color: rgb(225, 113, 113);
+}
+
 /* Stylist*/
 .stylist-card {
   display: flex;
@@ -257,6 +280,11 @@ main{
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   border-radius: 6px;
   padding: 20px;
+  justify-content: space-between;
+}
+
+.stylist-card .info-container {
+  width: 60%;
 }
 
 .avatar-container {
@@ -265,6 +293,15 @@ main{
   border-radius: 50%;
   overflow: hidden;
   margin-right: 20px;
+}
+
+.stylist-star {
+  font-size: 20px;
+  display: flex;
+}
+
+.stylist-card svg {
+  color: brown;
 }
 
 .avatar-container img {
@@ -293,6 +330,7 @@ main.leftbar-open {
   transition: all 0.35s ease-out;
   width: calc(100% - 250px);
   margin-left: 250px;
+  height: 100%;
 }
 
 .open-chart{
@@ -301,12 +339,11 @@ main.leftbar-open {
 .close-chart{
   width: 100%;
 }
-/* div[dir='ltr']{
-  width:  100% !important;
+button.view-appointments {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
-div[aria-label="A chart."] {
-  position: relative !important;
-}
-div[aria-label="A chart."] svg{
-  width: 100% !important;
-} */

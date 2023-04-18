@@ -1,43 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StylistRow from "../components/StylistRow";
 import CreateStylistPopup from "../components/CreateStylistPopup";
 import EditStylistPopup from "../components/EditStylistPopup";
 import "../styles/Stylist.css";
+import axiosClient from "../api/axiosClient";
+import { useDispatch, useSelector } from "react-redux";
+import { ConfigActions, ConfigSelectors } from "../redux/configRedux";
 
 const StylistPage = () => {
-  // Initialize the stylist data with an empty array
-  const [stylists, setStylists] = useState([
-    {
-      id: 1,
-      photo:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      name: "Jane Doe",
-      email: "jane.doe@salon.com",
-      phoneNumber: "5551234",
-      listService: ["Haircut", "Coloring", "Styling"],
-      rating: 4.8,
-    },
-    {
-      id: 2,
-      photo:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      name: "John Smith",
-      email: "john.smith@salon.com",
-      phoneNumber: "5555678",
-      listService: ["Haircut", "Shaving", "Beard Trimming"],
-      rating: 4.8,
-    },
-    {
-      id: 3,
-      photo:
-        "https://www.shutterstock.com/image-photo/smiling-girl-student-wear-wireless-260nw-1492613150.jpg",
-      name: "Sarah Johnson",
-      email: "sarah.johnson@salon.com",
-      phoneNumber: "5559876",
-      listService: ["Makeup", "Waxing", "Facials"],
-      rating: 4.8,
-    },
-  ]);
+  const salonId = localStorage.getItem('salonId');
+  const [stylists, setStylists] = useState([]);
+  const dispatch = useDispatch();
+  const updateDataMode = useSelector(ConfigSelectors.updateDateMode);
+
+  useEffect(() => {
+    axiosClient
+      .get(`/stylists/${salonId}`)
+      .then((data) => {
+        setStylists(data)
+      })
+      .catch((err) => console.log(err))
+
+    axiosClient
+      .get(`/services/${salonId}`)
+      .then((data) => {
+        dispatch(ConfigActions.setListServices(data))
+      })
+      .catch((err) => console.log(err))
+  }, [updateDataMode]);
 
   // State for showing or hiding the create stylist popup
   const [showCreatePopup, setShowCreatePopup] = useState(false);
@@ -49,25 +39,52 @@ const StylistPage = () => {
   const [editingStylist, setEditingStylist] = useState(null);
 
   // Function to add a new stylist to the stylists array
-  const addStylist = (stylist) => {
-    setStylists([...stylists, stylist]);
+  const addStylist = async (stylist) => {
+    try {
+      axiosClient
+      .post('/stylists', {...stylist})
+      .then((data) => {
+        dispatch(ConfigActions.setUpdateDataMode(!updateDataMode));
+      })
+      .catch((err) => console.log(err))
+    } catch (error) {
+      console.error("Error adding stylist:", error);
+    }
   };
 
   // Function to delete a stylist from the stylists array
   const deleteStylist = (id) => {
-    setStylists(stylists.filter((stylist) => stylist.id !== id));
+    try {
+      axiosClient
+      .delete(`/stylists/${id}`)
+      .then((data) => {
+        dispatch(ConfigActions.setUpdateDataMode(!updateDataMode));
+      })
+      .catch((err) => console.log(err))
+    } catch (error) {
+      console.error("Error deleting stylist:", error);
+    }
   };
 
   // Function to update an existing stylist in the stylists array
   const updateStylist = (updatedStylist) => {
-    setStylists(
-      stylists.map((stylist) => {
-        if (stylist.id === updatedStylist.id) {
-          return updatedStylist;
-        }
-        return stylist;
+    const dataUpdated = {
+      name: updatedStylist.name,
+      email: updatedStylist.email,
+      phoneNumber: updatedStylist.phoneNumber,
+      photo: updatedStylist.photo,
+      servicesOffered: updatedStylist.servicesOffered,
+    }
+    try {
+      axiosClient
+      .put(`/stylists/${updatedStylist.id}`, { ...dataUpdated })
+      .then((data) => {
+        dispatch(ConfigActions.setUpdateDataMode(!updateDataMode));
       })
-    );
+      .catch((err) => console.log(err))
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Function to open the create stylist popup
@@ -91,6 +108,7 @@ const StylistPage = () => {
     setShowEditPopup(false);
     setEditingStylist(null);
   };
+
   return (
     <div>
       <h1>Stylists</h1>
@@ -98,9 +116,7 @@ const StylistPage = () => {
         Create Stylist
       </button>
       {showCreatePopup && (
-        // <div className="popup-background">
         <CreateStylistPopup onClose={closeCreatePopup} onAdd={addStylist} />
-        // </div>
       )}
       <table>
         <thead>
@@ -110,7 +126,6 @@ const StylistPage = () => {
             <th>Email</th>
             <th>Phone Number</th>
             <th>Services</th>
-            <th>Rating</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>

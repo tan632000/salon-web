@@ -1,18 +1,16 @@
 import React from "react";
 
 const StylistRow = ({ stylist, onEditClick, onDeleteClick }) => {
-  const { name, email, phoneNumber, listService, rating, photo } = stylist;
-
+  const { id, name, email, phoneNumber, servicesOfferedName, photo } = stylist;
   return (
-    <tr>
+    <tr key={id}>
       <td>
         <img src={photo} className="image" />
       </td>
       <td>{name}</td>
       <td>{email}</td>
       <td>{phoneNumber}</td>
-      <td>{listService.join(", ")}</td>
-      <td>{rating}</td>
+      <td>{servicesOfferedName.join(", ")}</td>
       <td>
         <button
           className="button button-edit"

@@ -8,14 +8,17 @@ import {
   FaCommentAlt,
   FaShoppingBag,
   FaThList,
+  FaPowerOff,
 } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ConfigActions, ConfigSelectors } from "../redux/configRedux";
+import cookie from 'js-cookie'
 
 const Sidebar = ({ children }) => {
   const dispatch = useDispatch();
   const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
   const toggle = () => dispatch(ConfigActions.setIsOpenSidebar(!isOpen));
+  const navigate = useNavigate();
   const menuItem = [
     {
       path: "/",
@@ -28,26 +31,22 @@ const Sidebar = ({ children }) => {
       icon: <FaUserAlt />,
     },
     {
-      path: "/analytics",
-      name: "Analytics",
-      icon: <FaRegChartBar />,
-    },
-    {
-      path: "/comment",
-      name: "Comment",
+      path: "/service",
+      name: "Service",
       icon: <FaCommentAlt />,
     },
     {
-      path: "/product",
-      name: "Product",
+      path: "/user",
+      name: "User",
       icon: <FaShoppingBag />,
     },
-    {
-      path: "/productList",
-      name: "Product List",
-      icon: <FaThList />,
-    },
   ];
+
+  const handleLogout = () => {
+    localStorage.clear();
+    cookie.remove('token');
+    navigate('/login');
+  };
 
   useEffect(() => {
     const mainElement = document.querySelector("main");
@@ -83,6 +82,21 @@ const Sidebar = ({ children }) => {
             </div>
           </NavLink>
         ))}
+        <div
+          style={{ position: "absolute", bottom: "20px", cursor: 'pointer' }}
+          className="link"
+          onClick={handleLogout}
+        >
+          <div className="icon">
+            <FaPowerOff />
+          </div>
+          <div
+            style={{ display: isOpen ? "block" : "none" }}
+            className="link_text"
+          >
+            Logout
+          </div>
+        </div>
       </div>
       <main>{children}</main>
     </div>

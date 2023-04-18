@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Chart } from "react-google-charts";
 import { ConfigSelectors } from "../redux/configRedux";
+import axiosClient from '../api/axiosClient.js'
 
 const PurchaseChart = () => {
   const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
-  const data = [
+  const salonId = localStorage.getItem('salonId');
+  const [data, setData] = useState([
     ["Time", "Number of Appointments"],
     ["9:00 AM", 4],
     ["10:00 AM", 6],
@@ -15,7 +17,15 @@ const PurchaseChart = () => {
     ["1:00 PM", 10],
     ["2:00 PM", 7],
     ["3:00 PM", 9],
-  ];
+  ]);
+
+  useEffect(() => {
+    axiosClient
+    .get(`/appointments/${salonId}/appointments-per-time-slot`)
+    .then((data) => {
+      setData(data)
+    })
+  }, []);
   const options = {
     title: "Number of Appointments Picked per Time Slot",
     chartArea: { width: "60%" },

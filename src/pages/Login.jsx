@@ -31,11 +31,12 @@ const Login = () => {
         const {user, token} = data;
         if (user && token) {
           cookie.set('token', token)
-          navigate('/dashboard');
+          localStorage.setItem('user_id', user.id);
+          localStorage.setItem('username', user.firstName + " " + user.lastName)
+          navigate('/dashboard'); 
         }
       })
       .catch((err) => console.log(err))
-
   };
 
   return (
