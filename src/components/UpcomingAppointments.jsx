@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ConfigSelectors } from "../redux/configRedux";
 import axiosClient from "../api/axiosClient.js"
+import { formatMoney } from "../utils/formatMoney";
 
 const UpcomingAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -36,7 +37,7 @@ const UpcomingAppointments = () => {
         <h3 style={{ fontSize: "25px", fontWeight: 600, marginBottom: "20px" }}>
           Appointments on {selectedDate.toDateString()}
         </h3>
-        <h3 style={{ fontWeight: 600, marginBottom: "20px" }}>Total Revenue: {price} VNĐ</h3>
+        <h3 style={{ fontWeight: 600, marginBottom: "20px" }}>Total Revenue: {formatMoney(price)} VNĐ</h3>
         <AppointmentList appointments={appointment} />
       </div>
     </div>

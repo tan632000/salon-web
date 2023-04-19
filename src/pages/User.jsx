@@ -27,8 +27,21 @@ function User() {
     const renderStatus = (status) => {
         const { color, text } = STATUS_MAP[status] || { color: '', text: '' };
         return (
-          <button className={`appointment-status ${color}`}>{text}</button>
+            <button className={`appointment-status ${color}`}>{text}</button>
         );
+    };
+
+    const handleUpdateStatus = (appointmentId, newStatus) => {
+        axiosCLient.patch(`/appointments/${appointmentId}/${newStatus}`)
+        .then(() => {
+            const updatedUser = { ...selectedUser };
+            const appointmentIndex = updatedUser.appointments.findIndex((appointment) => appointment._id === appointmentId);
+            updatedUser.appointments[appointmentIndex].status = newStatus;
+            setSelectedUser(updatedUser);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     };
 
     const renderAppointmentTable = () => {
@@ -43,6 +56,7 @@ function User() {
                                 <th>Service Name</th>
                                 <th>Duration</th>
                                 <th>Price</th>
+                                <th>Update Status</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -52,7 +66,11 @@ function User() {
                                     <td>{appointment.time}</td>
                                     <td>{appointment.service.name}</td>
                                     <td>{appointment.service.duration} hours</td>
-                                    <td>{appointment.service.price} VND</td>
+                                    <td>{formatMoney(appointment.service.price)} VND</td>
+                                    <td>
+                                        <button className="success-appointments" onClick={() => handleUpdateStatus(appointment._id, 2)}>Mark as Completed</button>
+                                        <button className="cancel-appointments" onClick={() => handleUpdateStatus(appointment._id, 3)}>Mark as Cancel</button>
+                                    </td>
                                     <td>
                                         {renderStatus(appointment.status)}
                                     </td>

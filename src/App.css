@@ -347,3 +347,21 @@ button.view-appointments {
   border-radius: 4px;
   cursor: pointer;
 }
+button.cancel-appointments {
+  background-color: #da6837;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 45%;
+}
+button.success-appointments {
+  background-color: #66cb2b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 45%;
+}
