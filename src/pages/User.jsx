@@ -63,7 +63,7 @@ function User() {
                         <tbody>
                             {selectedUser.appointments.map((appointment) => (
                                 <tr key={appointment._id}>
-                                    <td>{appointment.time}</td>
+                                    <td>{appointment.time.replace("T", " ").replace(/\.\d+/, "").replace("Z", "")}</td>
                                     <td>{appointment.service.name}</td>
                                     <td>{appointment.service.duration} hours</td>
                                     <td>{formatMoney(appointment.service.price)} VND</td>
