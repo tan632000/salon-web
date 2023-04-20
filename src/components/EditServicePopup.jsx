@@ -28,10 +28,10 @@ const EditServicePopup = ({ show, onClose, onEdit, service }) => {
     <div className="overlay">
       <div
         className="modal-edit fade"
-        id="createservice"
+        id="editservice"
         tabIndex={-1}
         role="dialog"
-        aria-aria-labelledby="createserviceLabel"
+        aria-aria-labelledby="editserviceLabel"
         style={{height: 450, marginTop: 100}}
       >
         <div className="modal-dialog" role="document">

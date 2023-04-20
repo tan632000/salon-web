@@ -59,11 +59,11 @@ const EditStylistPopup = ({ show, onClose, onEdit, stylist }) => {
     <div className="overlay">
       <div
         className="modal-edit fade"
-        id="createStylist"
+        id="editStylist"
         tabIndex={-1}
         role="dialog"
-        aria-aria-labelledby="createStylistLabel"
-        style={{height: 700, marginTop: 20}}
+        aria-aria-labelledby="editStylistLabel"
+        style={{height: 750, marginTop: 20}}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content clearfix">

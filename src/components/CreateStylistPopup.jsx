@@ -76,7 +76,7 @@ const CreateStylistPopup = ({ onClose, onAdd }) => {
         tabIndex={-1}
         role="dialog"
         aria-aria-labelledby="createStylistLabel"
-        style={{height: 700, marginTop: 20}}
+        style={{height: 750, marginTop: 20}}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content clearfix">
