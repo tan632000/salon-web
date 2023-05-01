@@ -14,6 +14,9 @@ import axiosClient from "../api/axiosClient";
 import { ConfigActions, ConfigSelectors } from "../redux/configRedux";
 import cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import SalonDropdown from "../components/SalonDropdown";
+import TopServices from "../components/TopServices"
+import CustomerAgeChart from "../components/CustomerAgeChart";
 
 const Dashboard = () => {
   const [totalServices, setTotalServices] = useState(0);
@@ -22,8 +25,23 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const listStylists = useSelector(ConfigSelectors.stylistData);
   const navigate = useNavigate();
+  const listSalons = useSelector(ConfigSelectors.listSalons);
+  const [selectedSalon, setSelectedSalon] = useState(null);
+  const [topServices, setTopServices] = useState(null);
+  const [ageChat, setAgeChart] = useState(null);
+
+  const handleSalonChange = (salonId) => {
+    setSelectedSalon(salonId);
+    // do something with the selected salon
+  };
 
   useEffect(() => {
+    axiosClient.get('/salons')
+    .then((data) =>  {
+      if (data) {
+        dispatch(ConfigActions.setListSalons(data.salons));
+      }
+    })
     const token = cookies.get('token');
     token ? navigate('/dashboard') : navigate('/login')
   }, []);
@@ -51,13 +69,20 @@ const Dashboard = () => {
     .get(`/salons/${userId}`)
     .then((data) => {
       if (data) {
-        salonId = data.salon._id
+        salonId = selectedSalon ? selectedSalon : data.salon._id;
         localStorage.setItem('salonId', salonId)
 
         axiosClient
         .get(`/appointments/${salonId}/${year}/${month}/${day}`)
         .then((data) => {
           setTotalAppointments(data);
+        })
+        .catch((err) => console.log(err))
+
+        axiosClient
+        .get(`/appointments/${salonId}/top-services`)
+        .then((data) => {
+          setTopServices(data)
         })
         .catch((err) => console.log(err))
 
@@ -81,10 +106,17 @@ const Dashboard = () => {
           dispatch(ConfigActions.setListServices(data))
         })
         .catch((err) => console.log(err))
+
+        axiosClient
+        .get(`/appointments/${salonId}/customers-by-age`)
+        .then((data) => {
+          setAgeChart(data)
+        })
+        .catch((err) => console.log(err))
       }
     })
     .catch((err) => console.log(err))
-  }, [])
+  }, [selectedSalon])
 
   const filteredArray = totalAppointments.length > 0 && totalAppointments.filter(app => app.status === 2);
   const price = filteredArray.length > 0 ? filteredArray.reduce((sum, obj) => sum + obj.price, 0) : 0;
@@ -101,6 +133,7 @@ const Dashboard = () => {
           >
             Welcome to Dashboard Page
           </text>
+          <SalonDropdown salons={listSalons} onChange={handleSalonChange} />
         </div>
         <div className="normal-card">
           <Card
@@ -126,7 +159,13 @@ const Dashboard = () => {
           <text style={{ fontSize: "25px", fontWeight: "600" }}>
             Repurchase Rate
           </text>
-          <PurchaseChart />
+          <PurchaseChart onChange={selectedSalon} />
+        </div>
+        <div style={{ width: "100%" }}>
+          <TopServices topServices={topServices} />
+        </div>
+        <div style={{width: '100%'}}>
+          <CustomerAgeChart data={ageChat} />
         </div>
         <div>
           <text style={{ fontSize: "25px", fontWeight: 600 }}>Stylists</text>
@@ -158,6 +197,7 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
+            {listStylists.length === 0 && "No record available"}
           </div>
         </div>
       </div>

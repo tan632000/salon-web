@@ -5,11 +5,14 @@ import salonImage from "../images/background.jpg";
 import axiosClient from "../api/axiosClient";
 import cookie from 'js-cookie'
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { ConfigActions } from "../redux/configRedux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -30,6 +33,12 @@ const Login = () => {
       .then((data) => {
         const {user, token} = data;
         if (user && token) {
+          axiosClient.get('/salons')
+          .then((data) =>  {
+            if (data) {
+              dispatch(ConfigActions.setListSalons(data.salons));
+            }
+          })
           cookie.set('token', token)
           localStorage.setItem('user_id', user.id);
           localStorage.setItem('username', user.firstName + " " + user.lastName)

@@ -5,7 +5,7 @@ import { Chart } from "react-google-charts";
 import { ConfigSelectors } from "../redux/configRedux";
 import axiosClient from '../api/axiosClient.js'
 
-const PurchaseChart = () => {
+const PurchaseChart = ({onChange}) => {
   const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
   const salonId = localStorage.getItem('salonId');
   const [data, setData] = useState([
@@ -25,7 +25,7 @@ const PurchaseChart = () => {
     .then((data) => {
       setData(data)
     })
-  }, []);
+  }, [onChange]);
   const options = {
     title: "Number of Appointments Picked per Time Slot",
     chartArea: { width: "60%" },

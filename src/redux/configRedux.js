@@ -5,7 +5,8 @@ const initialState = {
   stylistData: [],
   salonId: "",
   updateDateMode: false,
-  listServices: []
+  listServices: [],
+  listSalons: []
 };
 
 export const { Types: ConfigTypes, Creators: ConfigActions } = createActions({
@@ -13,7 +14,8 @@ export const { Types: ConfigTypes, Creators: ConfigActions } = createActions({
   setStylistData: ["stylistData"],
   setSalonId: ["salonId"],
   setUpdateDataMode: ["updateDateMode"],
-  setListServices: ["listServices"]
+  setListServices: ["listServices"],
+  setListSalons: ["listSalons"]
 });
 
 export const ConfigSelectors = {
@@ -21,7 +23,8 @@ export const ConfigSelectors = {
   stylistData: (state) => state.config.stylistData,
   salonId: (state) => state.config.salonId,
   updateDateMode: (state) => state.config.updateDateMode,
-  listServices: (state) => state.config.listServices
+  listServices: (state) => state.config.listServices,
+  listSalons: (state) => state.config.listSalons
 };
 
 const setIsOpenSidebar = (state = initialState, { isOpenSidebar }) => {
@@ -59,12 +62,20 @@ const setListServices = (state = initialState, {listServices}) => {
   }
 }
 
+const setListSalons = (state = initialState, {listSalons}) => {
+  return {
+    ...state,
+    listSalons
+  }
+}
+
 export const HANDLERS = {
   [ConfigTypes.SET_IS_OPEN_SIDEBAR]: setIsOpenSidebar,
   [ConfigTypes.SET_STYLIST_DATA]: setStylistData,
   [ConfigTypes.SET_SALON_ID]: setSalonId,
   [ConfigTypes.SET_UPDATE_DATA_MODE]: setUpdateDataMode,
   [ConfigTypes.SET_LIST_SERVICES]: setListServices,
+  [ConfigTypes.SET_LIST_SALONS]: setListSalons
 };
 
 export default createReducer(initialState, HANDLERS);

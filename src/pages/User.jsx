@@ -14,7 +14,6 @@ function User() {
     }, []);
 
     const handleViewAppointments = (user) => {
-        console.log(user);
         setSelectedUser(user);
     }
 
