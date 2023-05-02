@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import SalonDropdown from "../components/SalonDropdown";
 import TopServices from "../components/TopServices"
 import CustomerAgeChart from "../components/CustomerAgeChart";
+import CityAppointmentChart from "../components/CityAppointmentChart";
 
 const Dashboard = () => {
   const [totalServices, setTotalServices] = useState(0);
@@ -29,6 +30,7 @@ const Dashboard = () => {
   const [selectedSalon, setSelectedSalon] = useState(null);
   const [topServices, setTopServices] = useState(null);
   const [ageChat, setAgeChart] = useState(null);
+  const [cityChart, setCityChart] = useState(null);
 
   const handleSalonChange = (salonId) => {
     setSelectedSalon(salonId);
@@ -113,10 +115,17 @@ const Dashboard = () => {
           setAgeChart(data)
         })
         .catch((err) => console.log(err))
+
+        axiosClient
+        .get('/appointments/All/customers-by-city')
+        .then((data) => {
+          setCityChart(data)
+        })
+        .catch((err) => console.log(err))
       }
     })
     .catch((err) => console.log(err))
-  }, [selectedSalon])
+  }, [dispatch, selectedSalon])
 
   const filteredArray = totalAppointments.length > 0 && totalAppointments.filter(app => app.status === 2);
   const price = filteredArray.length > 0 ? filteredArray.reduce((sum, obj) => sum + obj.price, 0) : 0;
@@ -166,6 +175,9 @@ const Dashboard = () => {
         </div>
         <div style={{width: '100%'}}>
           <CustomerAgeChart data={ageChat} />
+        </div>
+        <div style={{width: '100%'}}>
+          <CityAppointmentChart data={cityChart} />
         </div>
         <div>
           <text style={{ fontSize: "25px", fontWeight: 600 }}>Stylists</text>
