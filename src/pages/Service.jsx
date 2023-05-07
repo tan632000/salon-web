@@ -65,6 +65,7 @@ const Service = () => {
         description: updateService.description,
         price: updateService.price,
         duration: updateService.duration,
+        images: updateService.images
       }
       try {
         axiosClient
@@ -111,12 +112,13 @@ const Service = () => {
             <table>
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Duration</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Duration</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>

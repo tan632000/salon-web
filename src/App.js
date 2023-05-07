@@ -7,8 +7,8 @@ import Stylist from "./pages/Stylist.jsx";
 import Appointment from "./pages/Appointment.jsx";
 import Service from "./pages/Service.jsx";
 import User from "./pages/User.jsx";
-import ProductList from "./pages/ProductList.jsx";
 import Login from "./pages/Login.jsx";
+import RegisterService from "./pages/RegisterService";
 
 const App = () => {
   return (
@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/service" element={<Service />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/user" element={<User />} />
-          <Route path="/productList" element={<ProductList />} />
+          <Route path="/register-service" element={<RegisterService />} />
         </Routes>
       </Sidebar>
     </BrowserRouter>

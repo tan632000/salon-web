@@ -33,29 +33,24 @@
   border: none;
 }
 .modal-content .close{
-  color: #fff;
-  background: linear-gradient(to right, #33a3ff, #0675cf, #4cd5ff);
-  font-size: 25px;
-  font-weight: 400;
-  text-shadow: none;
-  line-height: 27px;
-  height: 25px;
-  width: 25px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: #026fd4;
   border-radius: 50%;
-  overflow: hidden;
-  opacity: 1;
-  position: absolute;
-  left: auto;
-  right: 8px;
-  top: 8px;
-  z-index: 1;
-  transition: all 0.3s;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 150ms;
+  margin-top: 5px;
 }
-.modal-content .close:hover{
-  color: #fff;
-  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+.icon-cross {
+  margin-top: -2px;
 }
-.close:focus{ outline: none; }
 .overlay {
   position: fixed; /* Sit on top of the page content */
   width: 100%; /* Full width (cover the whole page) */
@@ -208,32 +203,31 @@ select::after {
   clip-path: polygon(100% 0%, 0 0%, 50% 100%);
 }
 
-.custom-file-input::-webkit-file-upload-button {
-  visibility: hidden;
+input::file-selector-button {
+  background-image: linear-gradient(
+    to right,
+    #ff7a18,
+    #af002d,
+    #319197 100%,
+    #319197 200%
+  );
+  background-position-x: 0%;
+  background-size: 200%;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  text-shadow: 0 1px 1px #333;
+  transition: all 0.25s;
 }
-.custom-file-input::before {
-  content: 'Select some files';
-  display: inline-block;
-  background: linear-gradient(top, #f9f9f9, #e3e3e3);
-  border: 1px solid #999;
-  border-radius: 3px;
-  padding: 5px 8px;
-  outline: none;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  cursor: pointer;
-  text-shadow: 1px 1px #fff;
-  font-weight: 700;
-  font-size: 10pt;
+input::file-selector-button:hover {
+  background-position-x: 100%;
+  transform: scale(1.1);
 }
-.custom-file-input:hover::before {
-  border-color: black;
-}
-.custom-file-input:active::before {
-  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
-}
+
 .image {
   object-fit: contain;
   width: 300px;
   max-height: 100px;
+  margin-top: 10px;
 }

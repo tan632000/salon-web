@@ -5,6 +5,7 @@ const CreateServicePopup = ({ onClose, onAdd }) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("");
+  const [photo, setPhoto] = useState("");
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -29,7 +30,8 @@ const CreateServicePopup = ({ onClose, onAdd }) => {
       description: description,
       price: price,
       duration: duration,
-      salonId: localStorage.getItem('salonId')
+      salonId: localStorage.getItem('salonId'),
+      images: [photo]
     };
     onAdd(newService);
     onClose();
@@ -37,6 +39,21 @@ const CreateServicePopup = ({ onClose, onAdd }) => {
 
   const handleClose = () => {
     onClose();
+  };
+
+  const handlePhotoChange = async (event) => {
+    let file = '';
+    if (event.target.files && event.target.files[0]) {
+      file = event.target.files[0];
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'imageupload');
+    const data = await fetch('https://api.cloudinary.com/v1_1/c-ng-ty-tnhh-cic-vi-t-nam-chapter/image/upload', {
+      method: 'POST',
+      body: formData
+    }).then(r => r.json());
+    setPhoto(data.secure_url)
   };
 
   return (
@@ -47,7 +64,7 @@ const CreateServicePopup = ({ onClose, onAdd }) => {
         tabIndex={-1}
         role="dialog"
         aria-aria-labelledby="createServiceLabel"
-        style={{height: 450, marginTop: 100}}
+        style={{height: 590, marginTop: 100}}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content clearfix">
@@ -59,7 +76,8 @@ const CreateServicePopup = ({ onClose, onAdd }) => {
               aria-aria-label="Close"
               onClick={handleClose}
             >
-              <span aria-hidden="true">x</span>
+              <span class="icon-cross"></span>
+              <span class="visually-hidden">x</span>
             </button>
             <div className="modal-body">
               <h3 class="title">Create Service</h3>
@@ -112,6 +130,18 @@ const CreateServicePopup = ({ onClose, onAdd }) => {
                     onChange={handleDurationChange}
                     required
                   />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="photo">Photo URL</label>
+                  <input
+                    type="file"
+                    onChange={handlePhotoChange}
+                    required
+                  />
+                  {photo && (
+                    <img alt="preview image" src={photo} className="image" />
+                  )}
                 </div>
 
                 <button type="submit" className="btn">

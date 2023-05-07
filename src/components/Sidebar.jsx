@@ -40,6 +40,11 @@ const Sidebar = ({ children }) => {
       name: "User",
       icon: <FaShoppingBag />,
     },
+    {
+      path: "/register-service",
+      name: "Register Service",
+      icon: <FaThList />
+    }
   ];
 
   const handleLogout = () => {

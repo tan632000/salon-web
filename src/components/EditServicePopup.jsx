@@ -6,6 +6,7 @@ const EditServicePopup = ({ show, onClose, onEdit, service }) => {
     description: service.description,
     price: service.price,
     duration: service.duration,
+    photo: service.images[0]
   });
 
   const handleInputChange = (event) => {
@@ -24,6 +25,21 @@ const EditServicePopup = ({ show, onClose, onEdit, service }) => {
     onClose();
   };
 
+  const handlePhotoChange = async (event) => {
+    let file = '';
+    if (event.target.files && event.target.files[0]) {
+      file = event.target.files[0];
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'imageupload');
+    const data = await fetch('https://api.cloudinary.com/v1_1/c-ng-ty-tnhh-cic-vi-t-nam-chapter/image/upload', {
+      method: 'POST',
+      body: formData
+    }).then(r => r.json());
+    setFormData({ ...formData, photo: data.secure_url })
+  };
+
   return (
     <div className="overlay">
       <div
@@ -32,7 +48,7 @@ const EditServicePopup = ({ show, onClose, onEdit, service }) => {
         tabIndex={-1}
         role="dialog"
         aria-aria-labelledby="editserviceLabel"
-        style={{height: 450, marginTop: 100}}
+        style={{height: 590, marginTop: 100}}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content clearfix">
@@ -44,7 +60,8 @@ const EditServicePopup = ({ show, onClose, onEdit, service }) => {
               aria-aria-label="Close"
               onClick={handleClose}
             >
-              <span aria-hidden="true">x</span>
+              <span class="icon-cross"></span>
+              <span class="visually-hidden">x</span>
             </button>
             <div className="modal-body">
               <h3 className="title">Edit service</h3>
@@ -100,6 +117,17 @@ const EditServicePopup = ({ show, onClose, onEdit, service }) => {
                     value={formData.duration}
                     onChange={handleInputChange}
                   />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="photo">Photo URL</label>
+                  <input
+                    type="file"
+                    onChange={handlePhotoChange}
+                  />
+                  {formData.photo && (
+                    <img alt="preview image" src={formData.photo} className="image" />
+                  )}
                 </div>
 
                 <button type="submit" className="btn">
