@@ -5,7 +5,7 @@ const CityAppointmentChart = ({ data }) => {
   return (
     <div>
       <h2>User Statistics List By Area</h2>
-      <PieChart width={400} height={400}>
+      <PieChart width={400} height={300}>
         <Pie
           data={data}
           dataKey="count"
