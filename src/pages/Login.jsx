@@ -11,6 +11,7 @@ import { ConfigActions } from "../redux/configRedux";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -45,7 +46,23 @@ const Login = () => {
           navigate('/dashboard'); 
         }
       })
-      .catch((err) => console.log(err))
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          const { code, data } = error.response;
+          console.log(code, data);
+          setMessage(data.message);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('Request Error:', error.request);
+          setMessage(error.request);
+          // ...
+        } else {
+          // Something happened in setting up the request
+          console.log('Error:', error.message);
+          setMessage(error.message);
+        }
+      });
   };
 
   return (
@@ -55,6 +72,7 @@ const Login = () => {
     >
       <form className="login-form" onSubmit={handleSubmit}>
         <h1 style={{ fontSize: "36px", marginBlock: "30px" }}>Login</h1>
+        {message && <div className="error-message">{message}</div>}
         <div className="login-div">
           <label>Email:</label>
           <input

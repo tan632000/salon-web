@@ -16,6 +16,11 @@
     padding: 30px;
     border-radius: 10px;
 }
+
+.login-form .error-message {
+    color: #dc3545;
+    margin-bottom: 15px;
+}
   
 .login-div {
     display: flex;
