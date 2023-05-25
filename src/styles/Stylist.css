@@ -67,11 +67,20 @@ table th {
     color: white;
 }
 
+.action {
+    width: 10%;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
 .button {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding: 16px 32px;
+    padding: 10px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;

@@ -12,20 +12,20 @@ const StylistRow = ({ stylist, onEditClick, onDeleteClick }) => {
       <td>{phoneNumber}</td>
       <td>{servicesOfferedName.join(", ")}</td>
       <td>
-        <button
-          className="button button-edit"
-          onClick={() => onEditClick(stylist)}
-        >
-          Edit
-        </button>
-      </td>
-      <td>
-        <button
-          className="button button-delete"
-          onClick={() => onDeleteClick(stylist.id)}
-        >
-          Delete
-        </button>
+        <div className="button-container">
+          <button
+            className="button button-edit"
+            onClick={() => onEditClick(stylist)}
+          >
+            Edit
+          </button>
+          <button
+            className="button button-delete"
+            onClick={() => onDeleteClick(stylist.id)}
+          >
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   );

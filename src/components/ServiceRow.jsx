@@ -17,20 +17,20 @@ const ServiceRow = ({ service, onEditClick, onDeleteClick }) => {
       <td>{formatMoney(price)} VND</td>
       <td>{duration} hour(s)</td>
       <td>
-        <button
-          className="button button-edit"
-          onClick={() => onEditClick(service)}
-        >
-          Edit
-        </button>
-      </td>
-      <td>
-        <button
-          className="button button-delete"
-          onClick={() => onDeleteClick(service._id)}
-        >
-          Delete
-        </button>
+        <div className="button-container">
+          <button
+            className="button button-edit"
+            onClick={() => onEditClick(service)}
+          >
+            Edit
+          </button>
+          <button
+            className="button button-delete"
+            onClick={() => onDeleteClick(service._id)}
+          >
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   );

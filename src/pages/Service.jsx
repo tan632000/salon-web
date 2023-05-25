@@ -117,8 +117,7 @@ const Service = () => {
                   <th>Description</th>
                   <th>Price</th>
                   <th>Duration</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
+                  <th className="action">Action</th>
                 </tr>
                 </thead>
                 <tbody>

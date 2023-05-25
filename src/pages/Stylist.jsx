@@ -126,8 +126,7 @@ const StylistPage = () => {
             <th>Email</th>
             <th>Phone Number</th>
             <th>Services</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>

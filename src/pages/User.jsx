@@ -56,7 +56,7 @@ function User() {
                                 <th>Duration</th>
                                 <th>Price</th>
                                 <th>Update Status</th>
-                                <th>Status</th>
+                                <th style={{width: '10%'}}>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,8 +70,10 @@ function User() {
                                         <button className="success-appointments" onClick={() => handleUpdateStatus(appointment._id, 2)}>Mark as Completed</button>
                                         <button className="cancel-appointments" onClick={() => handleUpdateStatus(appointment._id, 3)}>Mark as Cancel</button>
                                     </td>
-                                    <td>
-                                        {renderStatus(appointment.status)}
+                                    <td style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+                                        <div style={{display: 'flex'}}>
+                                            {renderStatus(appointment.status)}
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -101,15 +103,17 @@ function User() {
                 <tbody>
                 {appointments.map((appointment, index) => (
                     <tr key={index}>
-                    <td>{`${appointment.user.firstName} ${appointment.user.lastName}`}</td>
-                    <td>{appointment.user.email}</td>
-                    <td>{appointment.user.phoneNumber}</td>
-                    <td>{appointment.appointments.length}</td>
-                    <td>{formatMoney(appointment.totalAmount)} VNĐ</td>
-                    <td>{appointment.appointments.length > 5 ? 'Gold' : 'Silver'}</td>
-                    <td>
-                        <button className="view-appointments" onClick={() => handleViewAppointments(appointment)}>View</button>
-                    </td>
+                        <td>{`${appointment.user.firstName} ${appointment.user.lastName}`}</td>
+                        <td>{appointment.user.email}</td>
+                        <td>{appointment.user.phoneNumber}</td>
+                        <td>{appointment.appointments.length}</td>
+                        <td>{formatMoney(appointment.totalAmount)} VNĐ</td>
+                        <td>{appointment.appointments.length > 5 ? 'Gold' : 'Silver'}</td>
+                        <td style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+                            <div style={{display: 'flex'}}>
+                                <button className="view-appointments" onClick={() => handleViewAppointments(appointment)}>View</button>
+                            </div>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
