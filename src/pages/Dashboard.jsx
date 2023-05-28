@@ -31,6 +31,11 @@ const Dashboard = () => {
   const [topServices, setTopServices] = useState(null);
   const [ageChat, setAgeChart] = useState(null);
   const [cityChart, setCityChart] = useState(null);
+  const [registeredSalon, setRegisteredSalon] = useState({
+    totalRegistered: 0,
+    totalVerified: 0,
+    totalMoney: 0
+  });
 
   const handleSalonChange = (salonId) => {
     setSelectedSalon(salonId);
@@ -57,6 +62,13 @@ const Dashboard = () => {
       }
     })
     .catch((err) => console.log(err))
+    axiosClient
+    .get('/registered')
+    .then((data) => {
+      if (data.success) {
+        setRegisteredSalon(data.payload);
+      }
+    })
   }, [])
 
   useEffect(() => {
@@ -163,6 +175,14 @@ const Dashboard = () => {
             money={true}
           />
           <Card image={<FaServicestack />} service="Services" price={totalServices} />
+          <Card image={<FaServicestack />} service="Total Registered Salon" price={registeredSalon.totalRegistered} />
+          <Card image={<FaServicestack />} service="Total Verified Salon" price={registeredSalon.totalVerified} />
+          <Card
+            image={<FaCashRegister />}
+            service="Salon Promotion Revenue"
+            price={registeredSalon.totalMoney}
+            money={true}
+          />
         </div>
         <div style={{ width: "100%" }}>
           <text style={{ fontSize: "25px", fontWeight: "600" }}>
