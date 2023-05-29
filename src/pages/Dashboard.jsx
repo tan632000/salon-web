@@ -184,7 +184,7 @@ const Dashboard = () => {
             money={true}
           />
         </div>
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", marginTop: 28 }}>
           <text style={{ fontSize: "25px", fontWeight: "600" }}>
             Repurchase Rate
           </text>
@@ -199,50 +199,15 @@ const Dashboard = () => {
         <div style={{width: '100%'}}>
           <CityAppointmentChart data={cityChart} />
         </div>
-        <div>
-          <text style={{ fontSize: "25px", fontWeight: 600 }}>Stylists</text>
-          <div
-            style={{
-              display: "grid",
-              gap: "20px",
-              paddingTop: "20px",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            }}
-          >
-            {listStylists.length > 0 && listStylists.map((stylist) => (
-              <div class="stylist-card">
-                <div class="avatar-container">
-                  <img
-                    src={stylist.photo}
-                    alt={stylist.name}
-                  />
-                </div>
-                <div class="info-container">
-                  <h2 class="stylist-name">{stylist.name}</h2>
-                  {stylist.servicesOfferedName.map((service) => (
-                    <p class="stylist-services">{service}</p>
-                  ))}
-                </div>
-                <div className="stylist-star">
-                  {stylist.avgStylistStars.toFixed(1)}
-                  <FaStar />
-                </div>
-              </div>
-            ))}
-            {listStylists.length === 0 && "No record available"}
-          </div>
-        </div>
       </div>
       <div className="upcoming-appointment">
-        <text style={{ fontSize: "25px", fontWeight: 600 }}>
+        <h1 style={{ fontSize: "25px", fontWeight: 600, marginBottom: 14 }}>
           Upcoming Appointments
-        </text>
-        <br />
-        <br />
+        </h1>
         <text style={{ fontSize: "20px", fontWeight: "400" }}>
           Please choose the day to see the appointment lists
         </text>
-        <div style={{ marginTop: "24px" }}>
+        <div style={{ marginTop: "10px" }}>
           <UpcomingAppointments />
         </div>
       </div>

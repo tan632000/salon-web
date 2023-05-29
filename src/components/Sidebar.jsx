@@ -1,23 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import {
   FaTh,
-  FaBars,
   FaUserAlt,
-  FaRegChartBar,
   FaCommentAlt,
   FaShoppingBag,
   FaThList,
   FaPowerOff,
 } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ConfigActions, ConfigSelectors } from "../redux/configRedux";
 import cookie from 'js-cookie'
 
 const Sidebar = ({ children }) => {
-  const dispatch = useDispatch();
-  const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
-  const toggle = () => dispatch(ConfigActions.setIsOpenSidebar(!isOpen));
   const navigate = useNavigate();
   const menuItem = [
     {
@@ -53,23 +46,13 @@ const Sidebar = ({ children }) => {
     navigate('/login');
   };
 
-  useEffect(() => {
-    const mainElement = document.querySelector("main");
-    isOpen
-      ? mainElement.classList.add("leftbar-open")
-      : mainElement.classList.remove("leftbar-open");
-  }, [isOpen]);
-
   return (
     <div className="container">
-      <div style={{ width: isOpen ? "250px" : "50px" }} className="sidebar">
+      <div style={{ width: "280px"}} className="sidebar">
         <div className="top_section">
-          <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
+          <h1 style={{ display: "block" }} className="logo">
             Salon Dashboard
           </h1>
-          <div style={{ marginLeft: isOpen ? "35px" : "0px" }} className="bars">
-            <FaBars onClick={toggle} />
-          </div>
         </div>
         {menuItem.map((item, index) => (
           <NavLink
@@ -80,7 +63,7 @@ const Sidebar = ({ children }) => {
           >
             <div className="icon">{item.icon}</div>
             <div
-              style={{ display: isOpen ? "block" : "none" }}
+              style={{ display: "block" }}
               className="link_text"
             >
               {item.name}
@@ -96,7 +79,7 @@ const Sidebar = ({ children }) => {
             <FaPowerOff />
           </div>
           <div
-            style={{ display: isOpen ? "block" : "none" }}
+            style={{ display: "block" }}
             className="link_text"
           >
             Logout

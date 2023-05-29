@@ -101,7 +101,7 @@ const Service = () => {
       setEditingService(null);
     };
     return (
-        <div>
+        <div style={{padding: 30}}>
             <h1>Services</h1>
             <button className="button" onClick={openCreatePopup}>
                 Create Service

@@ -12,12 +12,19 @@ const SalonDropdown = ({ salons, onChange }) => {
   };
 
   return (
-    <Select
-      options={options}
-      onChange={handleSelectChange}
-      isClearable={true}
-      placeholder="Select a salon"
-    />
+    <div style={{
+      border: 1,
+      borderRadius: 5,
+      boxShadow: '5px 5px 5px #888888',
+      marginTop: 10
+    }}>
+      <Select
+        options={options}
+        onChange={handleSelectChange}
+        isClearable={true}
+        placeholder="Select a salon"
+      />
+    </div>
   );
 };
 

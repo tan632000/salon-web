@@ -86,7 +86,7 @@ function User() {
         }
     }
     return (
-        <div>
+        <div style={{padding: 30}}>
             <h1>User Information</h1>
             <table>
                 <thead>

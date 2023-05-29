@@ -36,7 +36,7 @@ const RegisterService = () => {
   }
 
   return (
-    <div>
+    <div style={{padding: 30}}>
       <h1>Registered Salons</h1>
       <table>
         <thead>

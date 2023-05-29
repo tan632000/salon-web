@@ -7,9 +7,9 @@ const ServiceRow = ({ service, onEditClick, onDeleteClick }) => {
     <tr key={_id}>
       <td>
         <img 
-          src={images[0]} 
+          src={images[0]}
           alt='service'
-          style={{width: '100%', height: 'auto', resize: 'contain'}}   
+          style={{width: '100%', height: 'auto', resize: 'contain'}}
         />
       </td>
       <td>{name}</td>

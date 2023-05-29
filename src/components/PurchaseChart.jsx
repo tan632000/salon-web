@@ -54,7 +54,7 @@ const PurchaseChart = ({onChange}) => {
   }, [isOpen, renderChart]);
 
   // return the chart component
-  return <div style={{ maxWidth: 1266.42 }}>{renderChart()}</div>;
+  return <div style={{ maxWidth: 1266.42, marginTop: 20 }}>{renderChart()}</div>;
 };
 
 export default PurchaseChart;

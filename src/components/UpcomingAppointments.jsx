@@ -75,17 +75,17 @@ function AppointmentList({ appointments }) {
       {appointments.length > 0 && appointments.map((appointment) => (
         <li key={appointment._id} className="appointment">
           <div className="appointment-header">
+            <div className="staff-name">{appointment.stylist.name}</div>
             <img
               src={appointment.stylist.photo}
               alt={appointment.stylist.name}
               className="staff-photo"
             />
-            <div className="staff-name">{appointment.stylist.name}</div>
           </div>
           <div className="appointment-details">
-            <div>{(new Date(appointment.time)).toLocaleTimeString()}</div>
-            <div>{appointment.duration} hour(s)</div>
-            <div>{appointment.userName}</div>
+            <div className="appointment-time">{(new Date(appointment.time)).toLocaleTimeString()}</div>
+            <div className="appointment-duration">{appointment.duration} hour(s)</div>
+            <div className="appointment-user">{appointment.userName}</div>
           </div>
           {renderStatus(appointment.status)}
         </li>

@@ -5,7 +5,11 @@ const StylistRow = ({ stylist, onEditClick, onDeleteClick }) => {
   return (
     <tr key={id}>
       <td>
-        <img src={photo} className="image" />
+        <img
+          src={photo} 
+          style={{width: '100%', height: 'auto', resize: 'contain'}}
+          alt="img"
+        />
       </td>
       <td>{name}</td>
       <td>{email}</td>
