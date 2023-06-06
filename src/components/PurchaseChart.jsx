@@ -3,11 +3,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Chart } from "react-google-charts";
 import { ConfigSelectors } from "../redux/configRedux";
-import axiosClient from '../api/axiosClient.js'
+import axiosClient from "../api/axiosClient.js";
+import LoadingIndicator from "./LoadingIndicator";
 
-const PurchaseChart = ({onChange}) => {
+const PurchaseChart = ({ onChange }) => {
   const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
-  const salonId = localStorage.getItem('salonId');
+  const salonId = localStorage.getItem("salonId") || "All";
   const [data, setData] = useState([
     ["Time", "Number of Appointments"],
     ["9:00 AM", 4],
@@ -18,14 +19,21 @@ const PurchaseChart = ({onChange}) => {
     ["2:00 PM", 7],
     ["3:00 PM", 9],
   ]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true); // Set loading state to true before API call
+
     axiosClient
-    .get(`/appointments/${salonId}/appointments-per-time-slot`)
-    .then((data) => {
-      setData(data)
-    })
+      .get(`/appointments/${salonId}/appointments-per-time-slot`)
+      .then((data) => {
+        setData(data);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading state to false after API call completion
+      });
   }, [onChange]);
+
   const options = {
     title: "Number of Appointments Picked per Time Slot",
     chartArea: { width: "60%" },
@@ -37,6 +45,7 @@ const PurchaseChart = ({onChange}) => {
       title: "Number of Appointments",
     },
   };
+
   const renderChart = useCallback(() => {
     return (
       <Chart
@@ -53,8 +62,12 @@ const PurchaseChart = ({onChange}) => {
     renderChart();
   }, [isOpen, renderChart]);
 
-  // return the chart component
-  return <div style={{ maxWidth: 1266.42, marginTop: 20 }}>{renderChart()}</div>;
+  // Return the chart component or loading indicator based on the loading state
+  return (
+    <div style={{ maxWidth: 1266.42, marginTop: 20 }}>
+      {isLoading ? <LoadingIndicator /> : renderChart()}
+    </div>
+  );
 };
 
 export default PurchaseChart;

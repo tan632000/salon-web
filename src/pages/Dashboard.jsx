@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [totalAppointments, setTotalAppointments] = useState(0);
   const [totalMoney, setTotalMoney] = useState(0);
   const dispatch = useDispatch();
+  const listStylists = useSelector(ConfigSelectors.stylistData);
   const navigate = useNavigate();
   const listSalons = useSelector(ConfigSelectors.listSalons);
   const [selectedSalon, setSelectedSalon] = useState(null);
