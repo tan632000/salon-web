@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ConfigSelectors } from "../redux/configRedux";
 import axiosClient from "../api/axiosClient.js"
-import { formatMoney } from "../utils/formatMoney";
+import { formatMoney, generateRandomString } from "../utils/formatMoney";
 
 const UpcomingAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -156,7 +156,7 @@ const Calendar = ({ selectedDate, handleDateClick, handleDay, filteredAppointmen
     }
 
     return (
-      <div key={day} className={className} onClick={() => handleClick(day)}>
+      <div key={`${generateRandomString(6, 'abc123XYZ')}-${day}`} className={className} onClick={() => handleClick(day)}>
         {isCurrentMonth ? day : ""}
       </div>
     );
@@ -168,7 +168,7 @@ const Calendar = ({ selectedDate, handleDateClick, handleDay, filteredAppointmen
       const day = weekStart + i;
       days.push(renderCalendarDay(day));
     }
-    return <div className="calendar-week">{days}</div>;
+    return <div key={`${generateRandomString(6, 'abc123XYZ')}-${weekStart}`} className="calendar-week">{days}</div>;
   };
 
   const calendarRows = [];

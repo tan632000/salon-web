@@ -24,7 +24,6 @@ const Dashboard = () => {
   const [totalAppointments, setTotalAppointments] = useState(0);
   const [totalMoney, setTotalMoney] = useState(0);
   const dispatch = useDispatch();
-  const listStylists = useSelector(ConfigSelectors.stylistData);
   const navigate = useNavigate();
   const listSalons = useSelector(ConfigSelectors.listSalons);
   const [selectedSalon, setSelectedSalon] = useState(null);
@@ -146,14 +145,14 @@ const Dashboard = () => {
     <div className="full-content">
       <div className="dashboard">
         <div className="greeting">
-          <text style={{ fontWeight: "bold", fontSize: "25px" }}>
+          <span style={{ fontWeight: "bold", fontSize: "25px" }}>
             Hello {localStorage.getItem('username')}
-          </text>
-          <text
+          </span>
+          <span
             style={{ fontSize: "20px", fontWeight: "400", marginTop: "14px" }}
           >
             Welcome to Dashboard Page
-          </text>
+          </span>
           <SalonDropdown salons={listSalons} onChange={handleSalonChange} />
         </div>
         <div className="normal-card">
@@ -185,9 +184,9 @@ const Dashboard = () => {
           />
         </div>
         <div style={{ width: "100%", marginTop: 28 }}>
-          <text style={{ fontSize: "25px", fontWeight: "600" }}>
+          <span style={{ fontSize: "25px", fontWeight: "600" }}>
             Repurchase Rate
-          </text>
+          </span>
           <PurchaseChart onChange={selectedSalon} />
         </div>
         <div style={{ width: "100%" }}>
@@ -204,9 +203,9 @@ const Dashboard = () => {
         <h1 style={{ fontSize: "25px", fontWeight: 600, marginBottom: 14 }}>
           Upcoming Appointments
         </h1>
-        <text style={{ fontSize: "20px", fontWeight: "400" }}>
+        <span style={{ fontSize: "20px", fontWeight: "400" }}>
           Please choose the day to see the appointment lists
-        </text>
+        </span>
         <div style={{ marginTop: "10px" }}>
           <UpcomingAppointments />
         </div>

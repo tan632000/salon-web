@@ -36,7 +36,7 @@ const RegisterService = () => {
   }
 
   return (
-    <div style={{padding: 30}}>
+    <div style={{padding: 30, marginLeft: 280}}>
       <h1>Registered Salons</h1>
       <table>
         <thead>

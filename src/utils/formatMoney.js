@@ -6,3 +6,12 @@ export const formatMoney = (number) => {
     }
     return number;
 }
+
+export const generateRandomString = (length, characters) => {
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+    return result;
+}

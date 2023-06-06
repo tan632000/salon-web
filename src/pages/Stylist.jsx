@@ -110,7 +110,7 @@ const StylistPage = () => {
   };
 
   return (
-    <div style={{padding: 30}}>
+    <div style={{padding: 30, marginLeft: 280}}>
       <h1>Stylists</h1>
       <button className="button" onClick={openCreatePopup}>
         Create Stylist

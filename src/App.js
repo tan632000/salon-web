@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
 import Stylist from "./pages/Stylist.jsx";
@@ -9,25 +9,35 @@ import Service from "./pages/Service.jsx";
 import User from "./pages/User.jsx";
 import Login from "./pages/Login.jsx";
 import RegisterService from "./pages/RegisterService";
+import LoadingWrapper from "./components/LoadingWrapper";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Dashboard />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      <Sidebar>
+    <LoadingWrapper>
+      <BrowserRouter>
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/stylist" element={<Stylist />} />
-          <Route path="/service" element={<Service />} />
-          <Route path="/appointment" element={<Appointment />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/register-service" element={<RegisterService />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/*" element={<AuthenticatedRoutes />} />
         </Routes>
-      </Sidebar>
-    </BrowserRouter>
+      </BrowserRouter>
+    </LoadingWrapper>
+  );
+};
+
+const AuthenticatedRoutes = () => {
+  return (
+    <>
+      <Sidebar />
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/stylist" element={<Stylist />} />
+        <Route path="/service" element={<Service />} />
+        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/user" element={<User />} />
+        <Route path="/register-service" element={<RegisterService />} />
+      </Routes>
+    </>
   );
 };
 

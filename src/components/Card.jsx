@@ -5,8 +5,8 @@ const Card = ({ image, service, price, money }) => {
     <div className="card">
       <div className="image">{image}</div>
       <div className="content">
-        <text className="service">{service}</text>
-        <text className="price">{formatMoney(price)} {money && 'VNĐ'}</text>
+        <span className="service">{service}</span>
+        <span className="price">{formatMoney(price)} {money && 'VNĐ'}</span>
       </div>
     </div>
   );
