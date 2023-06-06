@@ -34,10 +34,10 @@ const UpcomingAppointments = () => {
         />
       </div>
       <div className="col-12">
-        <h3 style={{ fontSize: "25px", fontWeight: 600, marginBottom: "20px" }}>
+        <h3 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "20px" }}>
           Appointments on {selectedDate.toDateString()}
         </h3>
-        <h3 style={{ fontWeight: 600, marginBottom: "20px" }}>Total Revenue: {formatMoney(price)} VNĐ</h3>
+        <h3 style={{ fontSize: "18px", fontWeight: 600, marginBottom: "20px" }}>Total Revenue: {formatMoney(price)} VNĐ</h3>
         <AppointmentList appointments={appointment} />
       </div>
     </div>
@@ -66,9 +66,13 @@ function AppointmentList({ appointments }) {
   const renderStatus = (status) => {
     const { color, text } = STATUS_MAP[status] || { color: '', text: '' };
     return (
-      <button className={`appointment-status ${color}`}>{text}</button>
+      <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
+        <button className={`appointment-status ${color}`}>{text}</button>
+        <button className="edit-button">Edit</button>
+      </div>
     );
   };
+  
 
   return (
     <ul className="appointment-list">

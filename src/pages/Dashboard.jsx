@@ -204,7 +204,7 @@ const Dashboard = () => {
         <h1 style={{ fontSize: "25px", fontWeight: 600, marginBottom: 14 }}>
           Upcoming Appointments
         </h1>
-        <span style={{ fontSize: "20px", fontWeight: "400" }}>
+        <span style={{ fontSize: "18px", fontWeight: "400" }}>
           Please choose the day to see the appointment lists
         </span>
         <div style={{ marginTop: "10px" }}>
