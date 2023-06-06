@@ -3,7 +3,7 @@ import React from 'react';
 const TopServices = ({ topServices }) => {
   return (
     <div>
-      <h2>Top 5 Services Picked Most</h2>
+      <h3>Top 5 Services Picked Most</h3>
       <table>
         <thead>
           <tr>

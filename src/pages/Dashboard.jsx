@@ -6,7 +6,6 @@ import {
   FaCalendarAlt,
   FaCashRegister,
   FaServicestack,
-  FaStar
 } from "react-icons/fa";
 import PurchaseChart from "../components/PurchaseChart";
 import UpcomingAppointments from "../components/UpcomingAppointments";
@@ -24,7 +23,6 @@ const Dashboard = () => {
   const [totalAppointments, setTotalAppointments] = useState(0);
   const [totalMoney, setTotalMoney] = useState(0);
   const dispatch = useDispatch();
-  const listStylists = useSelector(ConfigSelectors.stylistData);
   const navigate = useNavigate();
   const listSalons = useSelector(ConfigSelectors.listSalons);
   const [selectedSalon, setSelectedSalon] = useState(null);
@@ -185,7 +183,7 @@ const Dashboard = () => {
           />
         </div>
         <div style={{ width: "100%", marginTop: 28 }}>
-          <span style={{ fontSize: "25px", fontWeight: "600" }}>
+          <span style={{ fontSize: "20px", fontWeight: "600" }}>
             Repurchase Rate
           </span>
           <PurchaseChart onChange={selectedSalon} />

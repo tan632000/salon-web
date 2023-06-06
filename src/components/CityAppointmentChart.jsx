@@ -4,7 +4,7 @@ import { PieChart, Pie, Legend, Tooltip } from 'recharts';
 const CityAppointmentChart = ({ data }) => {
   return (
     <div>
-      <h2>User Statistics List By Area</h2>
+      <h3>User Statistics List By Area</h3>
       <PieChart width={400} height={300}>
         <Pie
           data={data}

@@ -25,7 +25,7 @@ const CustomerAgeChart = ({ data }) => {
     
   return (
     <div>
-        <h2>User Statistics List By Age</h2>
+        <h3>User Statistics List By Age</h3>
         {renderItem()}
     </div>
   );

@@ -2,12 +2,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ConfigSelectors } from "../redux/configRedux";
-import axiosClient from "../api/axiosClient.js"
-import { formatMoney, generateRandomString } from "../utils/formatMoney";
+import axiosClient from "../api/axiosClient.js";
+import { formatMoney } from "../utils/formatMoney";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import 'react-datetime/css/react-datetime.css';
+import Datetime from 'react-datetime';
+import '../styles/UpcomingAppointments.css';
 
 const UpcomingAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [appointment, setAppointment] = useState([]);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
@@ -16,35 +23,141 @@ const UpcomingAppointments = () => {
   const handleDay = (day) => {
     const salonId = localStorage.getItem('salonId');
     axiosClient
-    .get(`/appointments/${salonId}/${day}`)
-    .then((data) => {
-      setAppointment(data)
-    })
+      .get(`/appointments/${salonId}/${day}`)
+      .then((data) => {
+        setAppointment(data)
+      })
   }
+
   const filteredArray = appointment.length > 0 && appointment.filter(app => app.status === 2);
   const price = filteredArray.length > 0 ? filteredArray.reduce((sum, obj) => sum + obj.price, 0) : 0;
+
+  const handleEditClick = (appointment) => {
+    setSelectedAppointment(appointment);
+    setShowEditPopup(true);
+  };
+
+  const handlePopupClose = () => {
+    setShowEditPopup(false);
+  };
+
+  const CustomCalendar = ({ selectedDate, handleDateClick, handleDay, filteredAppointments, showEditPopup, handleClosePopup }) => {
+    const [value, setValue] = useState(selectedDate);
+  
+    const handleChange = (date) => {
+      setValue(date);
+      handleDateClick(date);
+      handleDay(date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate());
+    };
+  
+    const tileContent = ({ date }) => {
+      const hasAppointments = filteredAppointments.some((appointment) => {
+        const appointmentDate = new Date(appointment.time);
+        return (
+          appointmentDate.getDate() === date.getDate() &&
+          appointmentDate.getMonth() === date.getMonth() &&
+          appointmentDate.getFullYear() === date.getFullYear()
+        );
+      });
+  
+      return hasAppointments && <div className="calendar-appointment-marker" />;
+    };
+  
+    return (
+      <div>
+        <Calendar
+          onChange={handleChange}
+          value={value}
+          tileContent={tileContent}
+          locale="en-us"
+        />
+        {showEditPopup && (
+          <AppointmentEditPopup
+            selectedAppointment={selectedAppointment}
+            handleClosePopup={handleClosePopup}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="row">
       <div className="col-md-4">
-        <Calendar
+        <CustomCalendar
           selectedDate={selectedDate}
           handleDateClick={handleDateClick}
           handleDay={handleDay}
           filteredAppointments={appointment}
+          showEditPopup={showEditPopup}
+          handleClosePopup={handlePopupClose}
         />
       </div>
       <div className="col-12">
-        <h3 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "20px" }}>
+        <h3 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "20px", marginTop: "10px" }}>
           Appointments on {selectedDate.toDateString()}
         </h3>
         <h3 style={{ fontSize: "18px", fontWeight: 600, marginBottom: "20px" }}>Total Revenue: {formatMoney(price)} VNĐ</h3>
-        <AppointmentList appointments={appointment} />
+        <AppointmentList appointments={appointment} handleEditClick={handleEditClick} />
       </div>
     </div>
   );
 };
 
-function AppointmentList({ appointments }) {
+const AppointmentEditPopup = ({ selectedAppointment, handleClosePopup }) => {
+  const [selectedTime, setSelectedTime] = useState(new Date(selectedAppointment.time));
+  const [message, setMessage] = useState("");
+
+  const handleTimeChange = (momentObj) => {
+    setSelectedTime(momentObj.toDate());
+  };
+
+  const handleSave = () => {
+    // Step 1: Parse the given time string into a Date object
+    const dateObj = new Date(selectedTime);
+
+    // Step 2: Extract the date and time components
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const hours = String(dateObj.getHours()).padStart(2, "0");
+    const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+    const seconds = String(dateObj.getSeconds()).padStart(2, "0");
+
+    // Step 3: Assemble the components into the desired format
+    const outputTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+    axiosClient
+    .patch(`/appointments/${selectedAppointment._id}`, {
+      time: outputTime
+    })
+    .then((data) => {
+      setMessage(data.message);
+      if (data.appointment) { 
+        handleClosePopup();
+      }
+    })
+    .catch((err) => console.log(err));
+  };
+
+  return (
+    <div className="appointment-edit-popup">
+      <h3>Update Time Appointment</h3>
+      <div className="calendar-container">
+        <Datetime
+          value={selectedTime}
+          onChange={handleTimeChange}
+          inputProps={{ placeholder: "Select date and time" }}
+        />
+      </div>
+      <button onClick={handleSave}>Save</button>
+      <button onClick={handleClosePopup}>Cancel</button>
+      {message && <p style={{color: 'red', marginTop: '10px'}}>{message}</p>}
+    </div>
+  );
+}
+
+function AppointmentList({ appointments, handleEditClick }) {
   const isOpen = useSelector(ConfigSelectors.isOpenSidebar);
   const STATUS_MAP = {
     1: { color: 'pending', text: 'Pending' },
@@ -63,16 +176,22 @@ function AppointmentList({ appointments }) {
     }
   }, [isOpen]);
 
-  const renderStatus = (status) => {
+  const renderStatus = (status, appointment) => {
     const { color, text } = STATUS_MAP[status] || { color: '', text: '' };
+    const handleEditButtonClick = (appointment) => {
+      if (status === 1) {
+        handleEditClick(appointment);
+      }
+    };
     return (
-      <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <button className={`appointment-status ${color}`}>{text}</button>
-        <button className="edit-button">Edit</button>
+        {status === 1 && (
+          <button className="edit-button" onClick={() => handleEditButtonClick(appointment)}>Edit</button>
+        )}
       </div>
     );
   };
-  
 
   return (
     <ul className="appointment-list">
@@ -91,123 +210,11 @@ function AppointmentList({ appointments }) {
             <div className="appointment-duration">{appointment.duration} hour(s)</div>
             <div className="appointment-user">{appointment.userName}</div>
           </div>
-          {renderStatus(appointment.status)}
+          {renderStatus(appointment.status, appointment)}
         </li>
       ))}
     </ul>
   );
 }
-
-const Calendar = ({ selectedDate, handleDateClick, handleDay, filteredAppointments }) => {
-  const [month, setMonth] = useState(selectedDate.getMonth());
-  const [year, setYear] = useState(selectedDate.getFullYear());
-
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const firstDayOfMonth = new Date(year, month, 1).getDay();
-
-  const handleClick = (day) => {
-    let monthUpdate = month + 1;
-    handleDateClick(new Date(year, month, day));
-    handleDay(year + '/' + monthUpdate + '/' + day)
-  };
-
-  const handlePrevMonth = () => {
-    setMonth((prevMonth) => prevMonth - 1);
-  };
-
-  const handleNextMonth = () => {
-    setMonth((prevMonth) => prevMonth + 1);
-  };
-
-  const handlePrevYear = () => {
-    setYear((prevYear) => prevYear - 1);
-  };
-
-  const handleNextYear = () => {
-    setYear((prevYear) => prevYear + 1);
-  };
-
-  const renderCalendarDay = (day) => {
-    if (day <= 0) {
-      day = ""
-    }
-    const isCurrentMonth = day <= daysInMonth;
-    const isToday = isCurrentMonth && day === new Date().getDate();
-    const isSelected =
-      isCurrentMonth &&
-      day === selectedDate.getDate() &&
-      month === selectedDate.getMonth() &&
-      year === selectedDate.getFullYear();
-    const hasAppointments = filteredAppointments > 0 && filteredAppointments.some(
-      (appointment) =>
-        appointment.time.getDate() === day &&
-        appointment.time.getMonth() === month &&
-        appointment.time.getFullYear() === year
-    );
-
-    let className = "calendar-day";
-    if (!isCurrentMonth) {
-      className += " disabled";
-    }
-    if (isToday) {
-      className += " today";
-    }
-    if (isSelected) {
-      className += " selected";
-    }
-    if (hasAppointments) {
-      className += " has-appointments";
-    }
-
-    return (
-      <div key={`${generateRandomString(6, 'abc123XYZ')}-${day}`} className={className} onClick={() => handleClick(day)}>
-        {isCurrentMonth ? day : ""}
-      </div>
-    );
-  };
-
-  const renderCalendarWeek = (weekStart) => {
-    const days = [];
-    for (let i = 0; i < 7; i++) {
-      const day = weekStart + i;
-      days.push(renderCalendarDay(day));
-    }
-    return <div key={`${generateRandomString(6, 'abc123XYZ')}-${weekStart}`} className="calendar-week">{days}</div>;
-  };
-
-  const calendarRows = [];
-  let weekStart = 1 - firstDayOfMonth;
-  while (weekStart <= daysInMonth) {
-    calendarRows.push(renderCalendarWeek(weekStart));
-    weekStart += 7;
-  }
-
-  return (
-    <div className="calendar">
-      <div className="calendar-header">
-        <button onClick={handlePrevYear}>{"<<"}</button>
-        <button onClick={handlePrevMonth}>{"<"}</button>
-        <div className="calendar-month">
-          {new Date(year, month).toLocaleString("default", { month: "long" })}{" "}
-          {year}
-        </div>
-        <button onClick={handleNextMonth}>{">"}</button>
-        <button onClick={handleNextYear}>{">>"}</button>
-      </div>
-      <div className="calendar-body">
-        <div className="calendar-row">
-          <div className="calendar-day-name">Sun</div>
-          <div className="calendar-day-name">Mon</div>
-          <div className="calendar-day-name">Tue</div>
-          <div className="calendar-day-name">Wed</div>
-          <div className="calendar-day-name">Thu</div>
-          <div className="calendar-day-name">Fri</div>
-          <div className="calendar-day-name">Sat</div>
-        </div>
-        {calendarRows}
-      </div>
-    </div>
-  );
-};
 
 export default UpcomingAppointments;
