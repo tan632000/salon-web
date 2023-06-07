@@ -130,7 +130,7 @@ const StylistPage = () => {
           </tr>
         </thead>
         <tbody>
-          {stylists.map((stylist) => (
+          {stylists.length > 0 && stylists.map((stylist) => (
             <StylistRow
               key={stylist.id}
               stylist={stylist}
