@@ -26,7 +26,7 @@ function User() {
     const renderStatus = (status) => {
         const { color, text } = STATUS_MAP[status] || { color: '', text: '' };
         return (
-            <button className={`appointment-status ${color}`}>{text}</button>
+            <button className={`appointment-status-user ${color}`}>{text}</button>
         );
     };
 
@@ -66,11 +66,11 @@ function User() {
                                     <td>{appointment.service.name}</td>
                                     <td>{appointment.service.duration} hours</td>
                                     <td>{formatMoney(appointment.service.price)} VND</td>
-                                    <td>
-                                        <button className="success-appointments" onClick={() => handleUpdateStatus(appointment._id, 2)}>Mark as Completed</button>
-                                        <button className="cancel-appointments" onClick={() => handleUpdateStatus(appointment._id, 3)}>Mark as Cancel</button>
+                                    <td style={{textAlign: 'center'}}>
+                                        <button className="success-appointments" onClick={() => handleUpdateStatus(appointment._id, 2)}>Complete</button>
+                                        <button className="cancel-appointments" onClick={() => handleUpdateStatus(appointment._id, 3)}>Cancel</button>
                                     </td>
-                                    <td style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+                                    <td style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '8px 0px'}}>
                                         <div style={{display: 'flex'}}>
                                             {renderStatus(appointment.status)}
                                         </div>
@@ -104,12 +104,12 @@ function User() {
                 {appointments.map((appointment, index) => (
                     <tr key={index}>
                         <td>{`${appointment.user.firstName} ${appointment.user.lastName}`}</td>
-                        <td>{appointment.user.email}</td>
+                        <td>{appointment.user.email}</td>   
                         <td>{appointment.user.phoneNumber}</td>
                         <td>{appointment.appointments.length}</td>
                         <td>{formatMoney(appointment.totalAmount)} VNĐ</td>
                         <td>{appointment.appointments.length > 5 ? 'Gold' : 'Silver'}</td>
-                        <td style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+                        <td style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '8px 0px'}}>
                             <div style={{display: 'flex'}}>
                                 <button className="view-appointments" onClick={() => handleViewAppointments(appointment)}>View</button>
                             </div>

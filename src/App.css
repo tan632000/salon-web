@@ -62,7 +62,7 @@ main{
   display: flex;
   align-items: center;
   border-radius: 5px;
-  box-shadow: 5px 5px 5px 5px #888888;
+  box-shadow: 1px 3px 3px 3px #b4a8a8;
 }
 .card .content {
   display: flex;
@@ -279,6 +279,15 @@ main{
   width: 70px;
 }
 
+.appointment-status-user {
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #52b788;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+}
+
 .pending {
   background-color: #9999d4;
 }
@@ -365,7 +374,7 @@ button.view-appointments {
   background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 12px 30px;
+  padding: 6px 20px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -373,7 +382,7 @@ button.cancel-appointments {
   background-color: #da6837;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
   width: 45%;
@@ -382,7 +391,7 @@ button.success-appointments {
   background-color: #66cb2b;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
   width: 45%;

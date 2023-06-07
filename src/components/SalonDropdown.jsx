@@ -15,7 +15,7 @@ const SalonDropdown = ({ salons, onChange }) => {
     <div style={{
       border: 1,
       borderRadius: 5,
-      boxShadow: '5px 5px 5px #888888',
+      boxShadow: '1px 3px 3px 3px #b4a8a8',
       marginTop: 10
     }}>
       <Select

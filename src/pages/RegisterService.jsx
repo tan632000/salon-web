@@ -80,7 +80,7 @@ const RegisterService = () => {
                   </td>
                 <td>
                   <button className={salon.verified ? 'verified' : 'unverified'} onClick={(event) => handleVerification(event, salon)}>
-                  {salon.verified ? "Mark as Not Verified" : "Mark as Verified"}
+                  {salon.verified ? "Unverify" : "Verify"}
                   </button>
                 </td>
                 <td>{new Date(salon.updatedAt).toLocaleString()}</td>
