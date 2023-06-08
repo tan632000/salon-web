@@ -26,7 +26,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const listSalons = useSelector(ConfigSelectors.listSalons);
   const [selectedSalon, setSelectedSalon] = useState(null);
-  const [topServices, setTopServices] = useState(null);
+  const [topServices, setTopServices] = useState([]);
   const [ageChat, setAgeChart] = useState(null);
   const [cityChart, setCityChart] = useState(null);
   const [registeredSalon, setRegisteredSalon] = useState({
@@ -44,7 +44,7 @@ const Dashboard = () => {
     axiosClient.get('/salons')
     .then((data) =>  {
       if (data) {
-        dispatch(ConfigActions.setListSalons(data.salons));
+        dispatch(ConfigActions.setListSalons(data.salons || []));
       }
     })
     const token = cookies.get('token');

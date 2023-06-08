@@ -120,7 +120,7 @@ const AppointmentEditPopup = ({ selectedAppointment, handleClosePopup }) => {
     const year = dateObj.getFullYear();
     const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
     const day = String(dateObj.getDate()).padStart(2, "0");
-    const hours = dateObj.getHours();
+    const hours = String(dateObj.getHours()).padStart(2, "0");
     const minutes = String(dateObj.getMinutes()).padStart(2, "0");
     const seconds = String(dateObj.getSeconds()).padStart(2, "0");
   
@@ -143,7 +143,22 @@ const AppointmentEditPopup = ({ selectedAppointment, handleClosePopup }) => {
           handleClosePopup();
         }
       })
-      .catch((err) => console.log(err));
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          const { data } = error.response;
+          setMessage(data.error);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('Request Error:', error.request);
+          setMessage(error.request);
+          // ...
+        } else {
+          // Something happened in setting up the request
+          console.log('Error:', error.message);
+          setMessage(error.message);
+        }
+      });
   };
 
   return (

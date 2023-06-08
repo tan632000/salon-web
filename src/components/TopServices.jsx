@@ -13,7 +13,7 @@ const TopServices = ({ topServices }) => {
           </tr>
         </thead>
         <tbody>
-          {topServices && topServices.map(service => (
+          {topServices.length > 0 && topServices.map(service => (
             <tr key={service.serviceId}>
               <td>{service.serviceName}</td>
               <td>{service.salonName}</td>
