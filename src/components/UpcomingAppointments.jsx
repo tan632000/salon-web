@@ -115,29 +115,35 @@ const AppointmentEditPopup = ({ selectedAppointment, handleClosePopup }) => {
   const handleSave = () => {
     // Step 1: Parse the given time string into a Date object
     const dateObj = new Date(selectedTime);
-
+  
     // Step 2: Extract the date and time components
     const year = dateObj.getFullYear();
     const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
     const day = String(dateObj.getDate()).padStart(2, "0");
-    const hours = String(dateObj.getHours()).padStart(2, "0");
+    const hours = dateObj.getHours();
     const minutes = String(dateObj.getMinutes()).padStart(2, "0");
     const seconds = String(dateObj.getSeconds()).padStart(2, "0");
-
-    // Step 3: Assemble the components into the desired format
+  
+    // Step 3: Validate the hour
+    if (hours > 0 && (hours < 8 || hours >= 18)) {
+      setMessage("Please make an appointment between 8am and 6pm. Please choose the time again.");
+      return; // Stop further execution
+    }
+  
+    //Step 4: Assemble the components into the desired format
     const outputTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-
+  
     axiosClient
-    .patch(`/appointments/${selectedAppointment._id}`, {
-      time: outputTime
-    })
-    .then((data) => {
-      setMessage(data.message);
-      if (data.appointment) { 
-        handleClosePopup();
-      }
-    })
-    .catch((err) => console.log(err));
+      .patch(`/appointments/${selectedAppointment._id}`, {
+        time: outputTime,
+      })
+      .then((data) => {
+        setMessage(data.message);
+        if (data.appointment) { 
+          handleClosePopup();
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
