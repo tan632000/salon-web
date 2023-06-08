@@ -41,14 +41,14 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    const token = cookies.get('token');
+    token ? navigate('/dashboard') : navigate('/login')
     axiosClient.get('/salons')
     .then((data) =>  {
       if (data) {
         dispatch(ConfigActions.setListSalons(data.salons || []));
       }
     })
-    const token = cookies.get('token');
-    token ? navigate('/dashboard') : navigate('/login')
   }, []);
 
   useEffect(() => {
