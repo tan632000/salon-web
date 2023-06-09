@@ -67,6 +67,10 @@ table th {
     color: white;
 }
 
+table th:nth-child(2) {
+    width: 20%;
+}
+
 .action {
     width: 10%;
 }
